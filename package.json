@@ -1,0 +1,16 @@
+{
+    "name": "movie-together",
+    "version": "1.0.0",
+    "description": "NodeJS Web App to share movie reviews with friends",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/c-salt/movie-website"
+    },
+    "scripts": {
+        "start": "cd server && npm start && cd ../client && npm start",
+        "dev": "concurrently \"npm run backend\" \"npm run frontend\"",
+        "backend": "cd server && npm start",
+        "frontend": "cd client && npm start"
+    }
+}
