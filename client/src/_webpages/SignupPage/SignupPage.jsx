@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { userService } from '../_services';
+import { userService } from '../../_services';
+import { Input } from '../../_components/Input';
 
 class SignupPage extends React.Component {
     constructor(props) {
@@ -53,6 +54,18 @@ class SignupPage extends React.Component {
         return(
             <div className="col-md-6 col-md-offset-3">
                 <h2>Sign Up</h2>
+                <Input 
+                    text="Email Address" 
+                    ref="email"
+                    type="text"
+                    defaultValue={this.state.email} 
+                    // validate={this.validateEmail}
+                    // value={this.state.email}
+                    // onChange={this.handleEmailInput} 
+                    // errorMessage="Email is invalid"
+                    // emptyMessage="Email can't be empty"
+                    // errorVisible={this.state.showEmailError}
+                />
                 <form name="form" onSubmit={this.handleSubmit}>
                     <div className={'form-group' + (submitted && !email ? ' has-error' : '')}>
                             <label htmlFor="email">Email</label>
