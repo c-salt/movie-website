@@ -16,8 +16,7 @@ class PasswordValidator extends React.Component {
 
     render() {
       return(
-        value:null,
-
+        <div> </div>
       )
     }
 

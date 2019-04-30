@@ -49,6 +49,11 @@ class SignupPage extends React.Component {
             );
     }
 
+    validateEmail(email) {
+        const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(email)
+    }
+
     render() {
         const { email, username, password, confirmedPassword, submitted, loading, error } = this.state;
         return(
@@ -59,12 +64,12 @@ class SignupPage extends React.Component {
                     ref="email"
                     type="text"
                     defaultValue={this.state.email} 
-                    // validate={this.validateEmail}
-                    // value={this.state.email}
-                    // onChange={this.handleEmailInput} 
-                    // errorMessage="Email is invalid"
-                    // emptyMessage="Email can't be empty"
-                    // errorVisible={this.state.showEmailError}
+                    validate={this.validateEmail}
+                    value={this.state.email}
+                    onChange={this.on} 
+                    errorMessage="Email is invalid"
+                    emptyMessage="Email can't be empty"
+                    errorVisible={this.state.showEmailError}
                 />
                 <form name="form" onSubmit={this.handleSubmit}>
                     <div className={'form-group' + (submitted && !email ? ' has-error' : '')}>
