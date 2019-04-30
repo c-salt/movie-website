@@ -139,7 +139,7 @@ class Input extends React.Component {
 		} else {
 			this.setState({
 				valid: false,
-				errorMessage: !_.isEmpty(value) ? this.props.errorMessage : this.props.emptyMessage
+				errorMessage: _.isEmpty(value) ? this.props.emptyMessage : this.props.errorMessage
 			});  
 		}
 	}
