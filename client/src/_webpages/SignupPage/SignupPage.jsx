@@ -66,7 +66,7 @@ class SignupPage extends React.Component {
                     defaultValue={this.state.email} 
                     validate={this.validateEmail}
                     value={this.state.email}
-                    onChange={this.on} 
+                    onChange={this.onChange} 
                     errorMessage="Email is invalid"
                     emptyMessage="Email can't be empty"
                     errorVisible={this.state.showEmailError}
