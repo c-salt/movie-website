@@ -1,22 +1,21 @@
 import React from 'react';
 import _ from 'lodash';
 import { InputError } from './InputError';
+import { Icon } from './Icon';
 
 class Input extends React.Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			value: null,
+			value: '',
 			empty: true,
-			email: '',
 			submitted: false,
 			focus: false,
-			valid: false,
-			validator: false,
-			validatorVisible: false,
-			isValidatorValid: false,
-			allValidatorValid: false,
+			valid: true,
+			hasHelpbox: false,
+			helpboxVisible: false,
+			helpboxData: false,
 			errorVisible: false,
 			errorMessage: this.props.errorMessage,
 			type: this.props.type
@@ -28,33 +27,32 @@ class Input extends React.Component {
 	}
 
 	handleChange(e) {
-		console.log('Before change', this.state);
-		console.log(e.target.value);
+		e.persist();
+		//console.log('Before change', this.state);
+		//console.log(e.target.value);
 		this.setState({
 			value: e.target.value,
 			empty: _.isEmpty(e.target.value)
+		}, () =>{
+			if(this.props.validator) {
+				this.checkRules(e.target.value)
+			}
+			// call input's validation method
+			if(this.props.validate) {
+				this.validateInput(e.target.value);
+			}
+			// call onChange method on the parent component for updating it's state
+			if(this.props.onChange) {
+				this.props.onChange(e);
+			}
+			//console.log('After Change:', this.state);
 		});
-
-		if(this.props.validator) {
-		this.checkRules(e.target.value)
-		}
-	
-		// call input's validation method
-		if(this.props.validate) {
-		this.validateInput(e.target.value);
-		}
-	
-		// call onChange method on the parent component for updating it's state
-		if(this.props.onChange) {
-		this.props.onChange(e);
-		}
-		console.log('After Change:', this.state);
 	}
 
 	handleBlur(e) {
 		this.setState({
 			focus: false,
-			validatorVisible: false,
+			helpboxVisible: false,
 			errorVisible: !this.state.valid
 		});
 	}
@@ -62,7 +60,7 @@ class Input extends React.Component {
 	handleFocus(e) {
 		this.setState({
 			focus: true,
-			validatorVisible: true
+			helpboxVisible: true
 		});
 
 		if (this.props.validator) {
@@ -82,7 +80,7 @@ class Input extends React.Component {
 	hideError(e) {
 		console.log('hideError')
 		this.setState({
-			validatorVisible: false,
+			helpboxVisible: false,
 			errorVisible: false
 		});
 	}
@@ -102,19 +100,18 @@ class Input extends React.Component {
 	checkRules(value) {
 		console.log('checkRules')
 
-		const validData = {
+		const helpboxData = {
 			minCharacters: !_.isEmpty(value) ? value.length >= parseInt(this.state.minCharacters) : false,
 			capitalLetters: !_.isEmpty(value) ? this.hasCapital(value) : false,
 			numbers: !_.isEmpty(value) ? this.hasNumber(value) : false,
 			words: !_.isEmpty(value) ? this.hasSpecialCharacter(value) : false
 		};
 
-		const allValid = (validData.minChars && validData.capitalLetters && validData.numbers && validData.words);
+		const allHelpboxEntriesValid = (validData.minChars && validData.capitalLetters && validData.numbers && validData.words);
 
 		this.setState({
-			isValidatorValid: validData,
-			allValidatorValid: allValid,
-			valid: allValid
+			helpboxData,
+			valid: allHelpboxEntriesValid
 		});
 	}
 
@@ -132,13 +129,16 @@ class Input extends React.Component {
 	validateInput(value) {
 		console.log('validateInput');
 		if(this.props.validate && this.props.validate(value)){
+			//console.log('IT IS VALID');
 			this.setState({
 				valid: true,
 				errorVisible: false
 			});
 		} else {
+			//console.log('IT IS INVALID');
 			this.setState({
 				valid: false,
+				errorVisible: true,
 				errorMessage: _.isEmpty(value) ? this.props.emptyMessage : this.props.errorMessage
 			});  
 		}
@@ -146,46 +146,13 @@ class Input extends React.Component {
 
 	render() {
 		return (
-			// <div className="col-md-6 col-md-offset-3">
-
-			//     <label className="input_label" htmlFor={this.props.text}>
-			//         <span className="label_text">{this.props.text}</span>
-			//     </label>
-
-			//     <input
-			//         {...this.props}
-			//         placeholder={this.props.placeholder}
-			//         className="input"
-			//         id={this.props.text}
-			//         defaultValue={this.props.defaultValue}
-			//         value={this.state.value}
-			//         onChange={this.handleChange}
-			//         // onFocus={this.handleFocus}
-			//         // onBlur={this.handleBlur}
-			//         autoComplete="off"
-			//     />
-
-			//     {/* <InputError
-			//         visible={this.state.errorVisible}
-			//         errorMessage={this.state.errorMessage}
-			//     /> */}
-
-			//     {/* <div className="validationIcons">
-			//         <i className="input_error_icon" onMouseEnter={this.mouseEnterError}> <Icon type="circle_error"/> </i>
-			//         <i className="input_valid_icon"> <Icon type="circle_tick"/> </i>
-			//     </div> */}
-
-			//     {/* { validator } */}
-
-			// </div>
-
-			<div className={'form-group' + (this.props.submitted && !this.props.email ? ' has-error' : '')}>
-				<label htmlFor="email">Email</label>
+			<div className={'form-group' + (this.props.submitted && !this.props.value ? ' has-error' : '')}>
+				<label htmlFor={this.state.type}>{this.props.text}</label>
 				<input
-					type="text"
+					type={this.state.type}
 					className="form-control"
-					name="email"
-					value={this.props.email}
+					name={this.props.referenceKey}
+					value={this.state.value}
 					onChange={this.handleChange}
 					onBlur={this.handleBlur}
 					onFocus={this.handleFocus}
@@ -193,7 +160,7 @@ class Input extends React.Component {
 				<div>
 				<InputError
 					errorVisible={this.state.errorVisible}
-					errorMessage="Email is wrong"
+					errorMessage={this.state.errorMessage}
 				/>
 				</div>
 			</div>

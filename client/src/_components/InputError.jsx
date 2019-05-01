@@ -13,7 +13,7 @@ class InputError extends React.Component {
       invisible: !this.props.errorVisible
     })
     return(
-    <div>
+    <div className={errorClass}>
       <span>{this.props.errorMessage}</span>
     </div>
     )
