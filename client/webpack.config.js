@@ -8,7 +8,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.jsx?$/,
+        test: /\.(js|jsx)$/,
         loader: 'babel-loader',
       },
     ],
@@ -26,3 +26,37 @@ module.exports = {
     }),
   },
 };
+
+// const HtmlWebPackPlugin = require("html-webpack-plugin");
+// module.exports = {
+//   module: {
+//     rules: [
+//       {
+//         test: /\.(js|jsx)$/,
+//         exclude: /node_modules/,
+//         use: {
+//           loader: "babel-loader"
+//         }
+//       },
+//       {
+//         test: /\.html$/,
+//         use: [
+//           {
+//             loader: "html-loader"
+//           }
+//         ]
+//       }
+//     ]
+//   },
+//   plugins: [
+//     new HtmlWebPackPlugin({
+//       template: "./src/index.html",
+//       filename: "./index.html"
+//     })
+//   ],
+//   externals: {
+//     config: JSON.stringify({
+//       apiUrl: 'http://localhost:4000',
+//     }),
+//   },
+// };
