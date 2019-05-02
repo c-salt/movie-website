@@ -1,5 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
+import classnames from 'classnames';
 import { InputError } from './InputError';
 import { Icon } from './Icon';
 
@@ -145,23 +146,91 @@ class Input extends React.Component {
 	}
 
 	render() {
+		const inputGroupClasses = classnames({
+      'input_group':     true,
+      'input_valid':     this.state.valid,
+      'input_error':     !this.state.valid,
+      'input_empty':     this.state.empty,
+      'input_hasValue':  !this.state.empty,
+      'input_focused':   this.state.focus,
+      'input_unfocused': !this.state.focus
+    });
+
 		return (
-			<div className={'form-group' + (this.props.submitted && !this.props.value ? ' has-error' : '')}>
-				<label htmlFor={this.state.type}>{this.props.text}</label>
-				<input
-					type={this.state.type}
-					className="form-control"
-					name={this.props.referenceKey}
-					value={this.state.value}
-					onChange={this.handleChange}
-					onBlur={this.handleBlur}
-					onFocus={this.handleFocus}
+			// <div className={'form-group' + (this.props.submitted && !this.props.value ? ' has-error' : '')}>
+			// 	<label htmlFor={this.state.type}>{this.props.text}</label>
+			// 	<input
+			// 		type={this.state.type}
+			// 		className="form-control"
+			// 		name={this.props.referenceKey}
+			// 		value={this.state.value}
+			// 		onChange={this.handleChange}
+			// 		onBlur={this.handleBlur}
+			// 		onFocus={this.handleFocus}
+			// 	/>
+			// 	<div>
+			// 	<InputError
+			// 		errorVisible={this.state.errorVisible}
+			// 		errorMessage={this.state.errorMessage}
+			// 	/>
+			// 	</div>
+			// </div>
+
+			//       <div className={inputGroupClasses}>
+
+      //   <label className="input_label" htmlFor={this.props.text}>
+      //     <span className="label_text">{this.props.text}</span>
+      //   </label>
+
+      //   <input 
+      //     {...this.props}
+      //     placeholder={this.props.placeholder} 
+      //     className="input" 
+      //     id={this.props.text}
+      //     defaultValue={this.props.defaultValue} 
+      //     value={this.state.value} 
+      //     onChange={this.handleChange} 
+      //     onFocus={this.handleFocus}
+      //     onBlur={this.handleBlur}
+      //     autoComplete="off"
+      //   />
+
+      //   <InputError 
+      //     visible={this.state.errorVisible} 
+      //     errorMessage={this.state.errorMessage} 
+      //   />
+
+      //   <div className="validationIcons">
+      //     <i className="input_error_icon" onMouseEnter={this.mouseEnterError}> <Icon type="circle_error"/> </i>
+      //     <i className="input_valid_icon"> <Icon type="circle_tick"/> </i>
+      //   </div>
+
+      //   {validator}
+
+      // </div>
+			<div className={inputGroupClasses}>
+				<label className="input_label" htmlFor={this.props.text}>
+					<span className="label_text">{this.props.text}</span>
+				</label>
+        <input 
+          {...this.props}
+          placeholder={this.props.placeholder} 
+          className="input" 
+          id={this.props.text}
+          defaultValue={this.props.defaultValue} 
+          value={this.state.value} 
+          onChange={this.handleChange} 
+          onFocus={this.handleFocus}
+          onBlur={this.handleBlur}
+          autoComplete="off"
+        />
+				<InputError 
+					visible={this.state.errorVisible} 
+					errorMessage={this.state.errorMessage} 
 				/>
-				<div>
-				<InputError
-					errorVisible={this.state.errorVisible}
-					errorMessage={this.state.errorMessage}
-				/>
+				<div className="validationIcons">
+					<i className="input_error_icon" onMouseEnter={this.mouseEnterError}> <Icon type="circle_error"/> </i>
+					<i className="input_valid_icon"> <Icon type="circle_tick"/> </i>
 				</div>
 			</div>
 		)

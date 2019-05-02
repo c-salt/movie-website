@@ -1,10 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
-import { PrivateRoute } from '../_components';
-import { HomePage } from '../_webpages/HomePage';
-import { LoginPage } from '../_webpages//LoginPage';
-import { SignupPage } from '../_webpages//SignupPage';
+import { PrivateRoute } from './PrivateRoute';
+import { HomePage } from '../webpages/HomePage';
+import { LoginPage } from '../webpages/LoginPage';
+import { SignupPage } from '../webpages/SignupPage';
 
 class App extends React.Component {
     render() {
