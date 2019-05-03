@@ -8,10 +8,12 @@ class InputError extends React.Component {
 
   render() {
     const errorClass = classNames({
+
       error_container: true,
       visible: this.props.errorVisible,
       invisible: !this.props.errorVisible
     })
+    console.log('Input Error:', this.props);
     return(
     <div className={errorClass}>
       <span>{this.props.errorMessage}</span>
