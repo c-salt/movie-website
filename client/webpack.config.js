@@ -2,14 +2,25 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   mode: 'development',
-  resolve: {
-    extensions: ['.js', '.jsx'],
-  },
   module: {
     rules: [
       {
-        test: /\.jsx?$/,
+        test: /\.(js|jsx)$/,
         loader: 'babel-loader',
+      },
+      {
+        test: /\.less$/,
+        use: [
+          {
+            loader: 'style-loader', // creates style nodes from JS strings
+          },
+          {
+            loader: 'css-loader', // translates CSS into CommonJS
+          },
+          {
+            loader: 'less-loader', // compiles Less to CSS
+          },
+        ],
       },
     ],
   },
@@ -26,3 +37,37 @@ module.exports = {
     }),
   },
 };
+
+// const HtmlWebPackPlugin = require("html-webpack-plugin");
+// module.exports = {
+//   module: {
+//     rules: [
+//       {
+//         test: /\.(js|jsx)$/,
+//         exclude: /node_modules/,
+//         use: {
+//           loader: "babel-loader"
+//         }
+//       },
+//       {
+//         test: /\.html$/,
+//         use: [
+//           {
+//             loader: "html-loader"
+//           }
+//         ]
+//       }
+//     ]
+//   },
+//   plugins: [
+//     new HtmlWebPackPlugin({
+//       template: "./src/index.html",
+//       filename: "./index.html"
+//     })
+//   ],
+//   externals: {
+//     config: JSON.stringify({
+//       apiUrl: 'http://localhost:4000',
+//     }),
+//   },
+// };
