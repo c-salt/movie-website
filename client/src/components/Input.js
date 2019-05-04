@@ -16,9 +16,9 @@ class Input extends React.Component {
 			valid: true,
 			hasHelpbox: this.props.hasHelpbox || false,
 			helpboxVisible: false,
-			helpboxData: {},
+			helpboxData: [],
 			errorVisible: false,
-			errorMessage: this.props.errorMessage,
+			errorMessage: this.props.emptyMessage,
 			type: this.props.type
 		};
 
@@ -27,6 +27,7 @@ class Input extends React.Component {
 		this.handleFocus = this.handleFocus.bind(this);
 		this.mouseEnterError = this.mouseEnterError.bind(this);
 		this.mouseLeaveError = this.mouseLeaveError.bind(this);
+		this.isValid = this.isValid.bind(this);
 	}
 
 	handleChange(e) {
@@ -64,6 +65,9 @@ class Input extends React.Component {
 			helpboxVisible: true,
 			errorVisible: false
 		});
+		if (this.state.hasHelpbox) {
+			this.checkRules(e.target.value);
+		}
 
 	}
 
@@ -103,44 +107,37 @@ class Input extends React.Component {
 	}
 
 	checkRules(value) {
-		const helpboxData = {
-			minCharacters: !_.isEmpty(value) ? value.length >= parseInt(this.props.minCharacters) : false,
-			capitalLetters: !_.isEmpty(value) ? this.hasCapital(value) : false,
-			numbers: !_.isEmpty(value) ? this.hasNumber(value) : false,
-			specialCharacters: !_.isEmpty(value) ? this.hasSpecialCharacter(value) : false
-		};
+		const helpboxData = [
+			{
+				valid: !_.isEmpty(value) ? value.length >= parseInt(this.props.minCharacters) : false,
+				errorMessage: `The password must be at least ${this.props.minCharacters} characters`
+			}, 
+			{
+				valid: !_.isEmpty(value) ? this.hasCapital(value) : false,
+				errorMessage: 'The password must contain at least one capital letter'
+			},
+			{ 
+				valid: !_.isEmpty(value) ? this.hasNumber(value) : false,
+				errorMessage: 'The password must contain at least one number'
+			},
+			{
+				valid: !_.isEmpty(value) ? this.hasSpecialCharacter(value) : false,
+				errorMessage: 'The password must contain at least one special character [!@#$%^&*?]'
+			}
+		];
 
-		// const helpboxData = {
-		// 	minCharacters: {
-		// 		valid: !_.isEmpty(value) ? value.length >= parseInt(this.props.minCharacters) : false,
-		// 		errorMessage: `The password must be at least ${this.state.minCharacters} characters`
-		// 	}, 
-		// 	capitalLetters: {
-		// 		valid: !_.isEmpty(value) ? this.hasCapital(value) : false,
-		// 		errorMessage: 'The password must contain at least one capital letter'
-		// 	},
-		// 	numbers: { 
-		// 		valid: !_.isEmpty(value) ? this.hasNumber(value) : false,
-		// 		errorMessage: 'The password must contain at least one number'
-		// 	},
-		// 	specialCharacters: {
-		// 		valid: !_.isEmpty(value) ? this.hasSpecialCharacter(value) : false,
-		// 		errorMessage: 'The password must contain at least one special character [!@#$%^&*?]'
-		// 	}
-		// };
-
-		console.log('Helpbox data:', helpboxData);
-		const allHelpboxEntriesValid = (helpboxData.minCharacters && helpboxData.capitalLetters && helpboxData.numbers && helpboxData.specialCharacters);
-		// const allHelpboxEntriesValid = (helpboxData.minCharacters.valid && helpboxData.capitalLetters.valid && helpboxData.numbers.valid && helpboxData.specialCharacters.valid);
-		console.log('All Entries', allHelpboxEntriesValid)
+		const allHelpboxEntriesValid = helpboxData.every(data => data.valid);
 		this.setState({
 			helpboxData,
-			valid: allHelpboxEntriesValid
+			valid: allHelpboxEntriesValid,
+			errorMessage: _.isEmpty(value) ? this.props.emptyMessage : this.props.errorMessage
 		});
 	}
 
 	isValid() {
 		this.validateInput(this.state.value);
+		console.log('State valid:', this.state.valid);
+		return this.state.valid;
 	}
 
 	validateInput(value) {
@@ -149,17 +146,15 @@ class Input extends React.Component {
 				valid: true,
 				errorVisible: false
 			});
-		} else {
+		} else if (this.props.validate && !this.props.validate(value)) {
 			this.setState({
 				valid: false,
-				//errorVisible: true,
 				errorMessage: _.isEmpty(value) ? this.props.emptyMessage : this.props.errorMessage
 			});
 		}
 	}
 
 	render() {
-		console.log('Input state valid', this.state.valid);
 		const inputGroupClasses = classnames({
 			'input_group':     true,
 			'input_valid':     this.state.valid,
@@ -178,9 +173,6 @@ class Input extends React.Component {
 					name={this.props.text}
 					value={this.state.value}
 					helpboxData={this.state.helpboxData}
-					minCharacters={this.props.minCharacters}
-					requireCapitals={this.props.requireCapitals}
-					requireNumbers={this.props.requireNumbers}
 				/>
 		}
 
@@ -203,7 +195,7 @@ class Input extends React.Component {
 				/>
 				<InputError 
 					errorVisible={this.state.errorVisible} 
-					errorMessage={this.state.errorMessage} 
+					errorMessage={this.state.errorMessage}
 				/>
 				<div className="validationIcons">
 					<i className="input_error_icon" onMouseEnter={this.mouseEnterError} onMouseLeave={this.mouseLeaveError}> <Icon type="circle_error"/> </i>

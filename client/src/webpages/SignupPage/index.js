@@ -26,7 +26,7 @@ class SignupPage extends React.Component {
     }
 
     handleChange(e){
-        const name = e.target.getAttribute('referencekey');
+        const name = e.target.getAttribute('ref');
         const value = e.target.value;
         this.setState({ [name]: value });
     }
@@ -39,32 +39,31 @@ class SignupPage extends React.Component {
                 this.refs.confirmedPassword.isValid();
             }
         });
-
-        // this.refs.confirmedPassword.hideError();
-        // this.setState({
-        //     password: event.target.value
-        // });
     }
 
     handleSubmit(e) {
         e.preventDefault()
+        const allValid = Object.keys(this.refs).every( (key) => {
+            return this.refs[key].isValid()
+        });
+        console.log(allValid);
 
-        this.setState({ submitted:true });
-        const { email, username, password, confirmedPassword, returnUrl } = this.state;
+        // this.setState({ submitted:true });
+        // const { email, username, password, confirmedPassword, returnUrl } = this.state;
         
-        if (!(username && password) || !(password == confirmedPassword)){
-            return;
-        }
+        // if (!(username && password) || !(password == confirmedPassword)){
+        //     return;
+        // }
 
-        this.setState({ loading: true });
-        userService.signup(email, username, password)
-            .then(
-                user => {
-                    const { from } = this.props.location.state || { from: { pathname: "/" } };
-                    this.props.history.push(from);
-                },
-                error => this.setState({ error, loading: false })
-            );
+        // this.setState({ loading: true });
+        // userService.signup(email, username, password)
+        //     .then(
+        //         user => {
+        //             const { from } = this.props.location.state || { from: { pathname: "/" } };
+        //             this.props.history.push(from);
+        //         },
+        //         error => this.setState({ error, loading: false })
+        //     );
     }
 
     validateEmail(email) {
@@ -78,12 +77,10 @@ class SignupPage extends React.Component {
     }
 
     validateConfirmedPassword(confirmedPassword) {
-        console.log('Validate confirmed password:', this.state.password === confirmedPassword)
         return this.state.password === confirmedPassword;
     }
 
     render() {
-        const { email, username, password, confirmedPassword, submitted, loading, error } = this.state;
         return(
             <div className="create_account_screen">
                 <div className="create_account_form">
@@ -92,31 +89,30 @@ class SignupPage extends React.Component {
                     <form name="form" onSubmit={this.handleSubmit}>
                         <Input 
                             text="Email Address" 
-                            referencekey="email"
+                            ref="email"
                             type="email"
                             defaultValue={this.state.email} 
                             validate={this.validateEmail}
                             value={this.state.email}
                             onChange={this.handleChange} 
-                            errorMessage="Email is invalid"
-                            emptyMessage="Email can't be empty"
+                            errorMessage="Please enter a valid email"
+                            emptyMessage="Please enter an email"
                             errorVisible={this.state.showEmailError}
                         />
                         <Input 
                             text="Username" 
-                            referencekey="username"
+                            ref="username"
                             type="text"
                             defaultValue={this.state.username} 
                             validate={this.validateUsername}
                             value={this.state.username}
                             onChange={this.handleChange} 
-                            errorMessage="This username is not available"
-                            emptyMessage="Username can't be empty"
+                            errorMessage="Please enter a valid username"
+                            emptyMessage="Please enter a username"
                             errorVisible={false}
                         />
                         <Input 
                             text="Password" 
-                            referencekey="password"
                             ref="password"
                             type="password"
                             defaultValue={this.state.password}
@@ -127,27 +123,24 @@ class SignupPage extends React.Component {
                             value={this.state.password}
                             hasHelpbox={true}
                             onChange={this.handlePasswordChange} 
-                            errorMessage="Password is invalid"
-                            emptyMessage="Please confirm password"
+                            errorMessage="Please enter a valid password"
+                            emptyMessage="Please enter a password"
                             errorVisible={false}
                         />
                         <Input 
                             text="Confirm Password" 
-                            referencekey="confirmedPassword"
                             ref="confirmedPassword"
                             type="password"
                             defaultValue={this.state.confirmedPassword} 
                             value={this.state.confirmedPassword}
                             onChange={this.handleChange}
                             validate={this.validateConfirmedPassword}
-                            errorMessage="Passwords must match"
-                            emptyMessage="Password can't be empty"
+                            errorMessage="Your passwords do not match"
+                            emptyMessage="Please confirm your password"
                             errorVisible={false}
                         />
-                        <button 
-                        type="submit" 
-                        className="button button_wide">
-                        CREATE ACCOUNT
+                        <button type="submit" className="button button_wide">
+                            CREATE ACCOUNT
                         </button>
                     </form>
                 </div>

@@ -23,7 +23,7 @@ class Helpbox extends React.Component {
     });
 
     let helpboxTitle;
-    let valid = Object.values(this.props.helpboxData).every( ele => ele === true );
+    let valid = Object.values(this.props.helpboxData).every( ele => ele.valid === true );
     if(valid && this.props.value != '') {
       helpboxTitle = 
         <h4 className="validator_title valid">
@@ -35,7 +35,18 @@ class Helpbox extends React.Component {
           {this.props.name} RULES
         </h4>
     }
+    const helpboxData =  this.props.helpboxData;
+    let ruleMessages = [];
 
+    this.props.helpboxData.forEach( (rule, index) => {
+      ruleMessages.push(
+        <li key={index} className={classnames({'valid': rule.valid})}> 
+          <i className="icon_valid"> <Icon type="circle_tick_filled"/> </i>
+          <i className="icon_invalid"> <Icon type="circle_error"/> </i>
+          <span className="error_message">{rule.errorMessage}</span>
+        </li>
+      )
+    })
     return(
       <div className={validatorClass}>
       <div className="validator_container">
@@ -43,31 +54,7 @@ class Helpbox extends React.Component {
         {helpboxTitle}
 
         <ul className="rules_list">
-      
-          <li className={classnames({'valid': this.props.helpboxData.minCharacters})}> 
-            <i className="icon_valid"> <Icon type="circle_tick_filled"/> </i>
-            <i className="icon_invalid"> <Icon type="circle_error"/> </i>
-            <span className="error_message">{this.props.minCharacters} characters minimum</span>
-          </li>
-
-          <li className={classnames({'valid': this.props.helpboxData.capitalLetters})}> 
-            <i className="icon_valid"> <Icon type="circle_tick_filled"/> </i>
-            <i className="icon_invalid"> <Icon type="circle_error"/> </i>
-            <span className="error_message">Contains at least {this.state.requireCapitals} capital letter</span>
-          </li>
-
-          <li className={classnames({'valid': this.props.helpboxData.numbers})}> 
-            <i className="icon_valid"> <Icon type="circle_tick_filled"/> </i>
-            <i className="icon_invalid"> <Icon type="circle_error"/> </i>
-            <span className="error_message">Contains at least {this.state.requireNumbers} number</span>
-          </li>
-
-          <li className={classnames({'valid': this.props.helpboxData.specialCharacters})}> 
-            <i className="icon_valid"> <Icon type="circle_tick_filled"/> </i>
-            <i className="icon_invalid"> <Icon type="circle_error"/> </i>
-            <span className="error_message">Contains at least {this.state.requireNumbers} special character</span>
-          </li>
-
+          { ruleMessages }
         </ul>
       </div>
     </div>
