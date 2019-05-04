@@ -119,12 +119,16 @@ class SignupPage extends React.Component {
                             referencekey="password"
                             ref="password"
                             type="password"
-                            defaultValue={this.state.password} 
+                            defaultValue={this.state.password}
+                            minCharacters="6"
+                            requireCapitals={true}
+                            requireNumbers={true}
+                            requireSpecialCharacters={true}
                             value={this.state.password}
                             hasHelpbox={true}
                             onChange={this.handlePasswordChange} 
-                            errorMessage="Password must be good"
-                            emptyMessage="Password can't be empty"
+                            errorMessage="Password is invalid"
+                            emptyMessage="Please confirm password"
                             errorVisible={false}
                         />
                         <Input 
