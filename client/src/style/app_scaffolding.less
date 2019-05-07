@@ -30,5 +30,19 @@ body {
   .webkit-scrollbar-light(); 
   
   @import "screens_style/signup_page.less";
+}
 
+.footer {
+  .flex-display();
+  .flex-direction(row);
+  .justify-content(center);
+  .align-items(center);
+  .flex-wrap(no-wrap);
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  padding: 10px 0 0 0;
+  width: 100%;
+  background-color: @button-default-bg;
+  color: white;
 }

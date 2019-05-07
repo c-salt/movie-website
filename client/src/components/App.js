@@ -22,10 +22,10 @@ class App extends React.Component {
                 </div>
                 <div className="footer">
                     <p>
-                        <a href="https://github.com/c-salt/movie-website" target="_top">Movie Together Website Github</a>
+                        <a href="https://github.com/c-salt/movie-website" target="_top"><Icon type="github"/></a>
                     </p>
                     <p>
-                        <Icon type="discord"/><a href="https://github.com/c-salt/movie-bot" target="_top">Discord Bot Github</a>
+                        <a href="https://github.com/c-salt/movie-bot" target="_top"><Icon type="discord"/></a>
                     </p>
                 </div>
             </div>

@@ -83,7 +83,6 @@ class SignupPage extends React.Component {
     }
 
     render() {
-        const { email, username, password, confirmedPassword, submitted, loading, error } = this.state;
         return(
             <div className="create_account_screen">
                 <div className="create_account_form">
@@ -146,6 +145,7 @@ class SignupPage extends React.Component {
                         CREATE ACCOUNT
                         </button>
                     </form>
+                    <p>Already have an account? <a href="/login">Login</a></p>
                 </div>
             </div>
         )
