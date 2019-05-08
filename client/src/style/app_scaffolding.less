@@ -14,7 +14,6 @@ body {
   .display(absolute);
   .size(100%, 100%);
   -webkit-font-smoothing: subpixel-antialiased;
-  background: @body-bg;
   overflow: hidden;
   font: normal normal 100 @font-size-base/@line-height-base 'Roboto', sans-serif;
   -webkit-overflow-scrolling: touch;
@@ -30,19 +29,20 @@ body {
   .webkit-scrollbar-light(); 
   
   @import "screens_style/signup_page.less";
-}
-
-.footer {
-  .flex-display();
-  .flex-direction(row);
-  .justify-content(center);
-  .align-items(center);
-  .flex-wrap(no-wrap);
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  padding: 10px 0 0 0;
-  width: 100%;
-  background-color: @button-default-bg;
-  color: white;
+  
+  .footer {
+    .flex-display();
+    .flex-direction(row);
+    .justify-content(center);
+    .align-items(center);
+    .flex-wrap(no-wrap);
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    padding: 10px 0 0 0;
+    width: 100%;
+    opacity: 0.9;
+    background-color: #30343F;
+    color: white;
+  }
 }

@@ -5,7 +5,8 @@
   .display(relative);
   width: 100%;
   min-height: 70px;
-  margin-bottom: 10px;
+  margin: 10px 0 10px 0;
+  opacity: 1;
 
   @media @mobile {
     min-height: @input-height-mobile;
@@ -41,7 +42,7 @@
   }
 
   &.input_empty.input_unfocused {
-    color: #c1c5cc;
+    color: #BFC3BA;
   }
 
   &.input_focused, &.input_hasValue {
@@ -75,6 +76,7 @@
     z-index: @layer1;
     -webkit-appearance: none;
     border: none;
+    border-radius: 5px;
     outline: none;
     padding: 18px 15px 0 15px;
     margin: 0 auto 13px auto;
@@ -92,6 +94,7 @@
     }
 
     &:-webkit-autofill {
+      box-shadow: 0 0 0px 1000px white inset;
       -webkit-box-shadow: 0 0 0px 1000px white inset;
       color: #cacaca;
     }
@@ -120,14 +123,14 @@
     &.input_error_icon {
       z-index: @layer2;
       path {
-        fill: @red;
+        fill: #FE5F55;
       }
     }   
 
     &.input_valid_icon {
       z-index: @layer1;
       path {
-        fill: @green;
+        fill: #3ddeff;
       }
     }
   }

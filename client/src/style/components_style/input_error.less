@@ -5,13 +5,12 @@
   white-space: nowrap;
   line-height: 70px;
   .size(auto, 70px);
-  background: @red;
+  background: #FE5F55;
   .box-sizing(border-box);
   padding: 0 20px 0 20px;
   color: white;
-  font-size: 14px;
-  font-weight: 100;
-  letter-spacing: .6px;
+  -webkit-font-smoothing: subpixel-antialiased;
+  letter-spacing: 1.5px;
   .user-select(none);
   .transition(all 0.2s ease-in-out);
 
@@ -25,8 +24,9 @@
   }
 
   &.visible {
-    .transform(translateX(0px));
+    .transform(translateX(10px));
     opacity: 1;
+    border-radius: 5px;
 
     @media @mobile {
       height: 30px;

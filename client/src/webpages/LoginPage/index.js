@@ -55,31 +55,33 @@ class LoginPage extends React.Component {
         return (
             <div className="create_account_screen">
                 <div className="create_account_form">
-                    <h1>Login</h1>
-                    <p>Login to your MovieTogether account.</p>
-                    <form name="form" onSubmit={this.handleSubmit}>
-                        <Input 
-                            text="Email Address" 
-                            referencekey="email"
-                            type="text"
-                            value={this.state.email}
-                            onChange={this.handleChange} 
-                        />
-                        <Input 
-                            text="Password" 
-                            referencekey="password"
-                            ref="password"
-                            type="password" 
-                            value={this.state.password}
-                            onChange={this.handleChange} 
-                        />
-                        <button 
-                        type="submit" 
-                        className="button button_wide">
-                            LOGIN
-                        </button>
-                    </form>
-                    <p>Need an account? <a href="/signup">Sign Up</a></p>
+                    <div className="form_wrapper">
+                        <h1>LOGIN</h1>
+                        <h2></h2>
+                        <form name="form" onSubmit={this.handleSubmit}>
+                            <Input 
+                                text="Email Address" 
+                                referencekey="email"
+                                type="text"
+                                value={this.state.email}
+                                onChange={this.handleChange} 
+                            />
+                            <Input 
+                                text="Password" 
+                                referencekey="password"
+                                ref="password"
+                                type="password" 
+                                value={this.state.password}
+                                onChange={this.handleChange} 
+                            />
+                            <button 
+                            type="submit" 
+                            className="button button_wide">
+                                LOGIN
+                            </button>
+                        </form>
+                        <p>Need an account? <a href="/signup">Sign Up</a></p>
+                    </div>
                 </div>
             </div>
         );

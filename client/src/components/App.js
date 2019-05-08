@@ -19,14 +19,12 @@ class App extends React.Component {
                             <Route path="/signup" component={SignupPage} />
                         </div>
                     </Router>
-                </div>
-                <div className="footer">
-                    <p>
-                        <a href="https://github.com/c-salt/movie-website" target="_top"><Icon type="github"/></a>
-                    </p>
-                    <p>
-                        <a href="https://github.com/c-salt/movie-bot" target="_top"><Icon type="discord"/></a>
-                    </p>
+                    <div className="footer">
+                        <p>
+                            <a href="https://github.com/c-salt/movie-website" target="_top"><Icon type="github"/></a>
+                        </p>
+                        <p>Developed by Elijah Sattler & Justen Caldwell</p>
+                    </div>
                 </div>
             </div>
         );

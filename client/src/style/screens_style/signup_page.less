@@ -1,10 +1,11 @@
 .create_account_screen {
   .display(absolute);
   .topLeft(0, 0);
-  .bottomRight(0, 0);  
+  .bottomRight(0, 0);
+  background-image: url("https://www.gannett-cdn.com/-mm-/8bbc5b80d5b9bdd86d53db4d829ff33899a7c494/c=0-202-2397-1556/local/-/media/2016/02/23/DetroitFreePress/DetroitFreePress/635918411363048100-IMG-6064.jpg?width=3200&height=1680&fit=crop"); 
+  background-size: cover;
   min-height: 520px;
-  opacity: 0;
-  .animation(fadeIn .4s ease-in-out forwards);
+  opacity: 1;
 
   .create_account_form {
     .flex-display();
@@ -12,27 +13,61 @@
     .justify-content(center);
     .align-items(center);
     position: relative;
-    margin: 80px 0 200px 0;
+    margin: 100px 0 200px 0;
     min-height: 400px;
+    opacity: 0;
+    .animation(fadeIn .6s ease-in-out forwards);
 
-    > h1 {
+    .form_wrapper {
+      padding: 32px 20px;
+      background-image: url("https://i.imgur.com/7Xkj5pF.png");
+      background-size: 100%;
+      border-radius: 12px;
+      opacity: 1;
+      align-content: center;
+    }
+
+    h1 {
       .display(relative);
-      font-size: 34px;
-      letter-spacing: .8px;
+      font-family: 'Oswald', sans-serif;
+      text-align: center;
+      font-size: 60px;
+      letter-spacing: 20px;
       font-weight: 200;
       line-height: 34px;
-      margin: 0 0 5px 0;
+      padding: 20px 0 0px 0;
+      color: white;
     }
+
+    h2 {
+      .display(relative);
+      font-family: 'Oswald', sans-serif;
+      text-align: center;
+      font-size: 24px;
+      letter-spacing: 10px;
+      font-weight: 200;
+      line-height: 34px;
+      padding: 20px 0 5px 0;
+      color: #3ddeff;
+    }
+
 
     p {
       .display(relative);
       font-size: 16px;
       font-weight: 100;
       letter-spacing: .7px;
-      color: @dark-blue;
+      color: white;
       text-align: center;
-      opacity: .5;
       margin: 0 0 30px 0;
+    }
+
+    a {
+      color: #3ddeff;
+      &:hover,
+      &:focus {
+        color: #FE5F55;
+      }
     }
 
     .checkbox_group {

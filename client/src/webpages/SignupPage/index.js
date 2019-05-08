@@ -86,66 +86,68 @@ class SignupPage extends React.Component {
         return(
             <div className="create_account_screen">
                 <div className="create_account_form">
-                    <h1>Sign Up</h1>
-                    <p>Create your MovieTogether user account.</p>
-                    <form name="form" onSubmit={this.handleSubmit}>
-                        <Input 
-                            text="Email Address" 
-                            referencekey="email"
-                            type="email"
-                            defaultValue={this.state.email} 
-                            validate={this.validateEmail}
-                            value={this.state.email}
-                            onChange={this.handleChange} 
-                            errorMessage="Email is invalid"
-                            emptyMessage="Email can't be empty"
-                            errorVisible={this.state.showEmailError}
-                        />
-                        <Input 
-                            text="Username" 
-                            referencekey="username"
-                            type="text"
-                            defaultValue={this.state.username} 
-                            validate={this.validateUsername}
-                            value={this.state.username}
-                            onChange={this.handleChange} 
-                            errorMessage="This username is not available"
-                            emptyMessage="Username can't be empty"
-                            errorVisible={false}
-                        />
-                        <Input 
-                            text="Password" 
-                            referencekey="password"
-                            ref="password"
-                            type="password"
-                            defaultValue={this.state.password} 
-                            value={this.state.password}
-                            hasHelpbox={true}
-                            onChange={this.handlePasswordChange} 
-                            errorMessage="Password must be good"
-                            emptyMessage="Password can't be empty"
-                            errorVisible={false}
-                        />
-                        <Input 
-                            text="Confirm Password" 
-                            referencekey="confirmedPassword"
-                            ref="confirmedPassword"
-                            type="password"
-                            defaultValue={this.state.confirmedPassword} 
-                            value={this.state.confirmedPassword}
-                            onChange={this.handleChange}
-                            validate={this.validateConfirmedPassword}
-                            errorMessage="Passwords must match"
-                            emptyMessage="Password can't be empty"
-                            errorVisible={false}
-                        />
-                        <button 
-                        type="submit" 
-                        className="button button_wide">
-                        CREATE ACCOUNT
-                        </button>
-                    </form>
-                    <p>Already have an account? <a href="/login">Login</a></p>
+                    <div className="form_wrapper">
+                        <h1>SIGN UP</h1>
+                        <h2></h2>
+                        <form name="form" onSubmit={this.handleSubmit}>
+                            <Input 
+                                text="Email Address" 
+                                referencekey="email"
+                                type="email"
+                                defaultValue={this.state.email} 
+                                validate={this.validateEmail}
+                                value={this.state.email}
+                                onChange={this.handleChange} 
+                                errorMessage="email is invalid"
+                                emptyMessage="email can't be empty"
+                                errorVisible={this.state.showEmailError}
+                            />
+                            <Input 
+                                text="Username" 
+                                referencekey="username"
+                                type="text"
+                                defaultValue={this.state.username} 
+                                validate={this.validateUsername}
+                                value={this.state.username}
+                                onChange={this.handleChange} 
+                                errorMessage="username is not available"
+                                emptyMessage="username can't be empty"
+                                errorVisible={false}
+                            />
+                            <Input 
+                                text="Password" 
+                                referencekey="password"
+                                ref="password"
+                                type="password"
+                                defaultValue={this.state.password} 
+                                value={this.state.password}
+                                hasHelpbox={true}
+                                onChange={this.handlePasswordChange} 
+                                errorMessage="password doesn't meet criteria"
+                                emptyMessage="password can't be empty"
+                                errorVisible={false}
+                            />
+                            <Input 
+                                text="Confirm Password" 
+                                referencekey="confirmedPassword"
+                                ref="confirmedPassword"
+                                type="password"
+                                defaultValue={this.state.confirmedPassword} 
+                                value={this.state.confirmedPassword}
+                                onChange={this.handleChange}
+                                validate={this.validateConfirmedPassword}
+                                errorMessage="passwords must match"
+                                emptyMessage="password can't be empty"
+                                errorVisible={false}
+                            />
+                            <button 
+                            type="submit" 
+                            className="button button_wide">
+                            CREATE ACCOUNT
+                            </button>
+                        </form>
+                        <p>Already have an account? <a href="/login">Login</a></p>
+                    </div>
                 </div>
             </div>
         )
