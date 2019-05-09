@@ -3,6 +3,7 @@ import _ from 'lodash';
 import classnames from 'classnames';
 import { InputError } from './InputError';
 import { Icon } from './Icon';
+import { Helpbox } from './Helpbox'
 
 class Input extends React.Component {
 	constructor(props) {
@@ -13,11 +14,11 @@ class Input extends React.Component {
 			submitted: false,
 			focus: false,
 			valid: true,
-			hasHelpbox: false,
+			hasHelpbox: this.props.hasHelpbox || false,
 			helpboxVisible: false,
-			helpboxData: false,
+			helpboxData: [],
 			errorVisible: false,
-			errorMessage: this.props.errorMessage,
+			errorMessage: this.props.emptyMessage,
 			type: this.props.type
 		};
 
@@ -26,6 +27,7 @@ class Input extends React.Component {
 		this.handleFocus = this.handleFocus.bind(this);
 		this.mouseEnterError = this.mouseEnterError.bind(this);
 		this.mouseLeaveError = this.mouseLeaveError.bind(this);
+		this.isValid = this.isValid.bind(this);
 	}
 
 	handleChange(e) {
@@ -35,7 +37,7 @@ class Input extends React.Component {
 			value: e.target.value,
 			empty: _.isEmpty(e.target.value)
 		}, () =>{
-			if(this.props.validator) {
+			if(this.props.hasHelpbox) {
 				this.checkRules(e.target.value)
 			}
 			// call input's validation method
@@ -63,18 +65,21 @@ class Input extends React.Component {
 			helpboxVisible: true,
 			errorVisible: false
 		});
+		if (this.state.hasHelpbox) {
+			this.checkRules(e.target.value);
+		}
 
 	}
 
 	mouseEnterError(e) {
-		console.log('mouseEnterError')
-		this.setState({
-			errorVisible: true
-		});
+		if (!this.state.hasHelpbox || !this.state.helpboxVisible) {
+			this.setState({
+				errorVisible: true
+			});
+		}
 	}
 
 	mouseLeaveError(e) {
-		console.log('mouseLeaveError')
 		if(this.state.focus){
 			this.setState({
 				errorVisible: false
@@ -83,7 +88,6 @@ class Input extends React.Component {
 	}
 
 	hideError(e) {
-		console.log('hideError')
 		this.setState({
 			helpboxVisible: false,
 			errorVisible: false
@@ -103,26 +107,37 @@ class Input extends React.Component {
 	}
 
 	checkRules(value) {
-		console.log('checkRules')
+		const helpboxData = [
+			{
+				valid: !_.isEmpty(value) ? value.length >= parseInt(this.props.minCharacters) : false,
+				errorMessage: `The password must be at least ${this.props.minCharacters} characters`
+			}, 
+			{
+				valid: !_.isEmpty(value) ? this.hasCapital(value) : false,
+				errorMessage: 'The password must contain at least one capital letter'
+			},
+			{ 
+				valid: !_.isEmpty(value) ? this.hasNumber(value) : false,
+				errorMessage: 'The password must contain at least one number'
+			},
+			{
+				valid: !_.isEmpty(value) ? this.hasSpecialCharacter(value) : false,
+				errorMessage: 'The password must contain at least one special character [!@#$%^&*?]'
+			}
+		];
 
-		const helpboxData = {
-			minCharacters: !_.isEmpty(value) ? value.length >= parseInt(this.state.minCharacters) : false,
-			capitalLetters: !_.isEmpty(value) ? this.hasCapital(value) : false,
-			numbers: !_.isEmpty(value) ? this.hasNumber(value) : false,
-			words: !_.isEmpty(value) ? this.hasSpecialCharacter(value) : false
-		};
-
-		const allHelpboxEntriesValid = (helpboxData.minChars && helpboxData.capitalLetters && helpboxData.numbers && helpboxData.words);
-
+		const allHelpboxEntriesValid = helpboxData.every(data => data.valid);
 		this.setState({
 			helpboxData,
-			valid: allHelpboxEntriesValid
+			valid: allHelpboxEntriesValid,
+			errorMessage: _.isEmpty(value) ? this.props.emptyMessage : this.props.errorMessage
 		});
 	}
 
 	isValid() {
-		console.log('isValid state:', this.state);
 		this.validateInput(this.state.value);
+		console.log('State valid:', this.state.valid);
+		return this.state.valid;
 	}
 
 	validateInput(value) {
@@ -131,10 +146,9 @@ class Input extends React.Component {
 				valid: true,
 				errorVisible: false
 			});
-		} else {
+		} else if (this.props.validate && !this.props.validate(value)) {
 			this.setState({
 				valid: false,
-				//errorVisible: true,
 				errorMessage: _.isEmpty(value) ? this.props.emptyMessage : this.props.errorMessage
 			});
 		}
@@ -150,6 +164,18 @@ class Input extends React.Component {
 			'input_focused':   this.state.focus,
 			'input_unfocused': !this.state.focus
 		});
+		let helpbox;
+		if (this.state.hasHelpbox) {
+			helpbox = 
+				<Helpbox
+					ref="helpbox"
+					visible={this.state.helpboxVisible}
+					name={this.props.text}
+					value={this.state.value}
+					helpboxData={this.state.helpboxData}
+				/>
+		}
+
 		return (
 			<div className={inputGroupClasses}>
 				<label className="input_label" htmlFor={this.props.text}>
@@ -169,12 +195,14 @@ class Input extends React.Component {
 				/>
 				<InputError 
 					errorVisible={this.state.errorVisible} 
-					errorMessage={this.state.errorMessage} 
+					errorMessage={this.state.errorMessage}
 				/>
 				<div className="validationIcons">
 					<i className="input_error_icon" onMouseEnter={this.mouseEnterError} onMouseLeave={this.mouseLeaveError}> <Icon type="circle_error"/> </i>
 					<i className="input_valid_icon"> <Icon type="circle_tick"/> </i>
 				</div>
+
+				{helpbox}
 			</div>
 		)
 	}

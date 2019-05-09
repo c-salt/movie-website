@@ -26,7 +26,7 @@ class SignupPage extends React.Component {
     }
 
     handleChange(e){
-        const name = e.target.getAttribute('referencekey');
+        const name = e.target.getAttribute('ref');
         const value = e.target.value;
         this.setState({ [name]: value });
     }
@@ -39,32 +39,31 @@ class SignupPage extends React.Component {
                 this.refs.confirmedPassword.isValid();
             }
         });
-
-        // this.refs.confirmedPassword.hideError();
-        // this.setState({
-        //     password: event.target.value
-        // });
     }
 
     handleSubmit(e) {
         e.preventDefault()
+        const allValid = Object.keys(this.refs).every( (key) => {
+            return this.refs[key].isValid()
+        });
+        console.log(allValid);
 
-        this.setState({ submitted:true });
-        const { email, username, password, confirmedPassword, returnUrl } = this.state;
+        // this.setState({ submitted:true });
+        // const { email, username, password, confirmedPassword, returnUrl } = this.state;
         
-        if (!(username && password) || !(password == confirmedPassword)){
-            return;
-        }
+        // if (!(username && password) || !(password == confirmedPassword)){
+        //     return;
+        // }
 
-        this.setState({ loading: true });
-        userService.signup(email, username, password)
-            .then(
-                user => {
-                    const { from } = this.props.location.state || { from: { pathname: "/" } };
-                    this.props.history.push(from);
-                },
-                error => this.setState({ error, loading: false })
-            );
+        // this.setState({ loading: true });
+        // userService.signup(email, username, password)
+        //     .then(
+        //         user => {
+        //             const { from } = this.props.location.state || { from: { pathname: "/" } };
+        //             this.props.history.push(from);
+        //         },
+        //         error => this.setState({ error, loading: false })
+        //     );
     }
 
     validateEmail(email) {
@@ -78,7 +77,6 @@ class SignupPage extends React.Component {
     }
 
     validateConfirmedPassword(confirmedPassword) {
-        console.log('Validate confirmed password:', this.state.password === confirmedPassword)
         return this.state.password === confirmedPassword;
     }
 
