@@ -6,7 +6,9 @@ const userService = require('./user.service');
 router.post('/authenticate', authenticate);
 router.get('/', getAll);
 
-module.exports = router;
+router.post('/register', (req, res, next) => {
+    console.log('i registered teehee');
+});
 
 function authenticate(req, res, next) {
     userService.authenticate(req.body)
@@ -19,3 +21,5 @@ function getAll(req, res, next) {
         .then(users => res.json(users))
         .catch(err => next(err));
 }
+
+module.exports = router;
