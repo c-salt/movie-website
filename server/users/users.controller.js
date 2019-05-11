@@ -8,6 +8,8 @@ router.get('/', getAll);
 
 router.post('/register', (req, res, next) => {
     console.log('i registered teehee');
+    console.log(req.body);
+    res.sendStatus(200);
 });
 
 function authenticate(req, res, next) {

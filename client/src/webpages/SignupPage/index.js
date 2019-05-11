@@ -1,15 +1,13 @@
 import React from 'react';
-
+import config from 'config';
+import axios from 'axios';
 import { userService } from '../../services';
 import { Input } from '../../components/Input';
 
 class SignupPage extends React.Component {
     constructor(props) {
         super(props);
-
-        userService.logout();
-
-        this.state = {
+        this.initialState = {
             email: '',
             username: '',
             password: '',
@@ -19,6 +17,8 @@ class SignupPage extends React.Component {
             error: ''
         };
 
+        this.state = this.initialState;
+
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.validateConfirmedPassword = this.validateConfirmedPassword.bind(this);
@@ -26,9 +26,11 @@ class SignupPage extends React.Component {
     }
 
     handleChange(e){
-        const name = e.target.getAttribute('ref');
+        const name = e.target.getAttribute('name');
         const value = e.target.value;
-        this.setState({ [name]: value });
+        this.setState({
+            [name]: value
+        })
     }
 
     handlePasswordChange(e) {
@@ -42,29 +44,22 @@ class SignupPage extends React.Component {
     }
 
     handleSubmit(e) {
-        e.preventDefault()
-        const allValid = Object.keys(this.refs).every( (key) => {
+        e.preventDefault();
+        e.persist();
+        const allValid = Object.keys(this.refs).map( (key) => {
             return this.refs[key].isValid()
-        });
-        console.log(allValid);
-
-        // this.setState({ submitted:true });
-        // const { email, username, password, confirmedPassword, returnUrl } = this.state;
-        
-        // if (!(username && password) || !(password == confirmedPassword)){
-        //     return;
-        // }
-
-        // this.setState({ loading: true });
-        // userService.signup(email, username, password)
-        //     .then(
-        //         user => {
-        //             const { from } = this.props.location.state || { from: { pathname: "/" } };
-        //             this.props.history.push(from);
-        //         },
-        //         error => this.setState({ error, loading: false })
-        //     );
-    }
+        }).every(validity => validity);
+        if (!allValid) {
+            return;
+        };
+        axios.post(`${config.apiUrl}/user`, this.state).then(res => {
+            if (!res.success) {
+                alert(res.errorMessage);
+            } else {
+                
+            }
+        })
+    };
 
     validateEmail(email) {
         const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -73,11 +68,11 @@ class SignupPage extends React.Component {
 
     validateUsername(name) {
         // Validate it is not taken
-        return true;
+        return !_.isEmpty(name);
     }
 
     validateConfirmedPassword(confirmedPassword) {
-        return this.state.password === confirmedPassword;
+        return this.state.password === confirmedPassword && this.state.password !== '';
     }
 
     render() {
@@ -90,52 +85,58 @@ class SignupPage extends React.Component {
                         <form name="form" onSubmit={this.handleSubmit}>
                             <Input 
                                 text="Email Address" 
-                                referencekey="email"
+                                ref="email"
+                                name="email"
                                 type="email"
                                 defaultValue={this.state.email} 
                                 validate={this.validateEmail}
                                 value={this.state.email}
                                 onChange={this.handleChange} 
-                                errorMessage="email is invalid"
-                                emptyMessage="email can't be empty"
+                                errorMessage="Email is invalid"
+                                emptyMessage="Email can't be empty"
                                 errorVisible={this.state.showEmailError}
                             />
                             <Input 
                                 text="Username" 
-                                referencekey="username"
+                                ref="username"
+                                name="username"
                                 type="text"
                                 defaultValue={this.state.username} 
                                 validate={this.validateUsername}
                                 value={this.state.username}
                                 onChange={this.handleChange} 
-                                errorMessage="username is not available"
-                                emptyMessage="username can't be empty"
+                                errorMessage="Username is not available"
+                                emptyMessage="Username can't be empty"
                                 errorVisible={false}
                             />
                             <Input 
                                 text="Password" 
-                                referencekey="password"
                                 ref="password"
+                                name="password"
                                 type="password"
-                                defaultValue={this.state.password} 
+                                defaultValue={this.state.password}
+                                minCharacters="6"
+                                requireCapitals={true}
+                                requireNumbers={true}
+                                requireSpecialCharacters={true}
                                 value={this.state.password}
                                 hasHelpbox={true}
                                 onChange={this.handlePasswordChange} 
-                                errorMessage="password doesn't meet criteria"
-                                emptyMessage="password can't be empty"
+                                errorMessage="Please enter a valid password"
+                                emptyMessage="Please enter a password"
                                 errorVisible={false}
                             />
                             <Input 
                                 text="Confirm Password" 
-                                referencekey="confirmedPassword"
                                 ref="confirmedPassword"
+                                name="confirmedPassword"
                                 type="password"
                                 defaultValue={this.state.confirmedPassword} 
                                 value={this.state.confirmedPassword}
                                 onChange={this.handleChange}
                                 validate={this.validateConfirmedPassword}
-                                errorMessage="passwords must match"
-                                emptyMessage="password can't be empty"
+                                errorMessage="Your passwords do not match"
+                                emptyMessage="Please confirm your password"
                                 errorVisible={false}
                             />
                             <button 

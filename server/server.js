@@ -3,21 +3,20 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const basicAuth = require('./helpers/basic-auth');
-const errorHandler = require('./helpers/error-handler');
+const basicAuth = require('./middleware/basic-auth');
+const errorHandler = require('./utils/error-handler');
+const routes = require('./routes/index');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
 
 // use basic HTTP auth to secure the api
-app.use(basicAuth);
+// app.use(basicAuth);
 
-// api routes
-app.use('/users', require('./users/users.controller'));
-
+app.use(routes);
 // global error handler
-app.use(errorHandler);
+// app.use(errorHandler);
 
 // start server
 const port = process.env.NODE_ENV === 'production' ? 80 : 4000;

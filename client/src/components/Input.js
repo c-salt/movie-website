@@ -9,7 +9,7 @@ class Input extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			value: '',
+			value: this.props.value,
 			empty: true,
 			submitted: false,
 			focus: false,
@@ -21,7 +21,6 @@ class Input extends React.Component {
 			errorMessage: this.props.emptyMessage,
 			type: this.props.type
 		};
-
 		this.handleChange = this.handleChange.bind(this);
 		this.handleBlur = this.handleBlur.bind(this);
 		this.handleFocus = this.handleFocus.bind(this);
@@ -125,19 +124,17 @@ class Input extends React.Component {
 				errorMessage: 'The password must contain at least one special character [!@#$%^&*?]'
 			}
 		];
-
 		const allHelpboxEntriesValid = helpboxData.every(data => data.valid);
 		this.setState({
 			helpboxData,
 			valid: allHelpboxEntriesValid,
 			errorMessage: _.isEmpty(value) ? this.props.emptyMessage : this.props.errorMessage
 		});
+		return allHelpboxEntriesValid;
 	}
 
 	isValid() {
-		this.validateInput(this.state.value);
-		console.log('State valid:', this.state.valid);
-		return this.state.valid;
+		return this.validateInput(this.state.value);
 	}
 
 	validateInput(value) {
@@ -146,11 +143,28 @@ class Input extends React.Component {
 				valid: true,
 				errorVisible: false
 			});
+			return true;
 		} else if (this.props.validate && !this.props.validate(value)) {
 			this.setState({
 				valid: false,
+				errorVisible: !this.state.focus,
 				errorMessage: _.isEmpty(value) ? this.props.emptyMessage : this.props.errorMessage
 			});
+			return false;
+		}
+		if (this.state.hasHelpbox && this.checkRules(this.state.value)) {
+			this.setState({
+				valid: true,
+				errorVisible: false
+			});
+			return true;
+		} else if (this.state.hasHelpbox && !this.checkRules(this.state.value)) {
+			this.setState({
+				valid: false,
+				errorVisible: true,
+				errorMessage: _.isEmpty(value) ? this.props.emptyMessage : this.props.errorMessage
+			});
+			return false;
 		}
 	}
 
@@ -175,7 +189,6 @@ class Input extends React.Component {
 					helpboxData={this.state.helpboxData}
 				/>
 		}
-
 		return (
 			<div className={inputGroupClasses}>
 				<label className="input_label" htmlFor={this.props.text}>
@@ -190,7 +203,7 @@ class Input extends React.Component {
 					onFocus={this.handleFocus}
 					onBlur={this.handleBlur}
 					autoComplete="off"
-					referencekey={this.props.referencekey}
+					name={this.props.name}
 					type={this.props.type}
 				/>
 				<InputError 
