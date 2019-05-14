@@ -3,21 +3,39 @@ const model = require('../models/user');
 
 const methods = {};
 
-function saltAndHashPassword(password) {
-    const salt = bcrypt.genSaltSync(10);
-    return bcrypt.hashSync(password, salt);
+/**
+ * Compares user provided password with hashed one
+ * @param {String} password 
+ * @param {String} hashedPassword 
+ * @returns {Boolean}
+ */
+function comparePasswords(password, hashedPassword) {
+    return bcrypt.compareSync(password, hashedPassword);
 }
 
 methods.createAccount = (email, username, password) => {
-    if (model.doesEmailExist()) {
+    if (model.doesEmailExist(email)) {
         throw new Error('Email already exists');
     }
-    if (model.doesUsernameExist()) {
+    if (model.doesUsernameExist(username)) {
         throw new Error('Username already exists');
     }
-    const hashedPassword = saltAndHashPassword(password);
 
-    model.addUser(email, username, hashedPassword);
+    model.addUser(email, username, password);
+};
+
+methods.login = (email, password) => {
+    const user = model.findUser(email);
+    if (user === []) {
+        throw new Error('User does not exist');
+    }
+
+    if (!comparePasswords(password, user[0].password)) {
+        throw new Error('Email or password is incorrect');
+    }
+
+    return user[0].userid;
+
 };
 
 module.exports = methods;

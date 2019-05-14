@@ -14,7 +14,14 @@ app.post('/', (req, res, next) => {
     const { email, username, password } = req.body;
     console.log(email, username, password);
     try {
-        userController.createAccount(email, username, password); 
+        userController.createAccount(email, username, password);
+        console.log('User being created');
+        res.send({ 
+            status: 200, 
+            body: {
+                success: true
+            }
+        });
     } catch (err) {
         res.send({
             status: 200,
@@ -23,15 +30,7 @@ app.post('/', (req, res, next) => {
                 errorMessage: err.message
             }
         });
-        return;
     }
-    console.log('i am creating a user, fear me');
-    res.send({ 
-        status: 200, 
-        body: {
-            success: true
-        }
-    })
 });
 
 //Update user info

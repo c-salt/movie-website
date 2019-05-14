@@ -3,7 +3,7 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const basicAuth = require('./middleware/basic-auth');
+const withAuth = require('./middleware/authentication');
 const errorHandler = require('./utils/error-handler');
 const routes = require('./routes/index');
 

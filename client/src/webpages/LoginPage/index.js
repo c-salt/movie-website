@@ -1,5 +1,6 @@
 import React from 'react';
-
+import config from 'config';
+import axios from 'axios';
 import { userService } from '../../services';
 import { Input } from '../../components/Input';
 
@@ -12,9 +13,6 @@ class LoginPage extends React.Component {
         this.state = {
             email: '',
             password: '',
-            submitted: false,
-            loading: false,
-            error: ''
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -31,8 +29,7 @@ class LoginPage extends React.Component {
         console.log('Submitting: ', this.state);
         e.preventDefault();
 
-        this.setState({ submitted: true });
-        const { email, password, returnUrl } = this.state;
+        const { email, password } = this.state;
 
         // stop here if form is invalid
         if (!(email && password)) {
@@ -40,15 +37,22 @@ class LoginPage extends React.Component {
             return;
         }
 
-        this.setState({ loading: true });
-        userService.login(email, password)
-            .then(
-                user => {
-                    const { from } = this.props.location.state || { from: { pathname: "/" } };
-                    this.props.history.push(from);
-                },
-                error => this.setState({ error, loading: false })
-            );
+        axios.post(`${config.apiUrl}/session`, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: this.state
+        }).then(res => {
+            if (res.status === 200) {
+                this.props.history.push('/');
+              } else {
+                const error = new Error(res.errorMessage);
+                throw error;
+              }
+        }).catch(err => {
+            console.error(err);
+            alert('Error logging in please try again');
+        });
     }
 
     render() {
