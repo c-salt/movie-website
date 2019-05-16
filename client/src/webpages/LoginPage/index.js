@@ -20,34 +20,40 @@ class LoginPage extends React.Component {
     }
 
     handleChange(e) {
-        const name = e.target.getAttribute('referencekey');
+        const name = e.target.getAttribute('name');
         const value = e.target.value;
-        this.setState({ [name]: value });
+        this.setState({ 
+            [name]: value 
+        });
+        //console.log(name, value);
     }
 
     handleSubmit(e) {
-        console.log('Submitting: ', this.state);
+        //console.log('Submitting: ', this.state);
         e.preventDefault();
 
         const { email, password } = this.state;
 
         // stop here if form is invalid
         if (!(email && password)) {
-            console.log('Invalid form.');
+            //console.log('Invalid form.');
             return;
         }
 
         axios.post(`${config.apiUrl}/session`, {
+            //withCredentials: true,
             headers: {
                 'Content-Type': 'application/json'
             },
             data: this.state
         }).then(res => {
+            //console.log(res);
             if (res.status === 200) {
-                this.props.history.push('/');
+                console.log('redirecting...')
+                this.props.history.push('/home');
               } else {
                 const error = new Error(res.errorMessage);
-                throw error;
+                //throw error;
               }
         }).catch(err => {
             console.error(err);
@@ -65,14 +71,14 @@ class LoginPage extends React.Component {
                         <form name="form" onSubmit={this.handleSubmit}>
                             <Input 
                                 text="Email Address" 
-                                referencekey="email"
+                                name="email"
                                 type="text"
                                 value={this.state.email}
                                 onChange={this.handleChange} 
                             />
                             <Input 
                                 text="Password" 
-                                referencekey="password"
+                                name="password"
                                 ref="password"
                                 type="password" 
                                 value={this.state.password}

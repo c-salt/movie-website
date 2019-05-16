@@ -7,8 +7,8 @@ const secret = process.env.secret;
 
 // Login
 app.post('/', (req, res, next) => {
-  const { email, password } = req.body;
-
+  const { email, password } = req.body.data;
+  //console.log(email, password, req.body.data);
   try {
     const userid = userController.login(email, password);
     console.log('Session being created');
@@ -16,15 +16,13 @@ app.post('/', (req, res, next) => {
     const token = jwt.sign(payload, secret, {
       expiresIn: '1h'
     });
-    res.cookie('token', token, { httpOnly: true }).sendStatus(200);
+    console.log('Generated token: ', token);
+    res.cookie('token', token, { httpOnly: true });
+    res.sendStatus(200);
 
   } catch (err) {
-    res.send({
-      status: 401,
-      body: {
-        errorMessage: err.message
-      }
-    });
+    console.log('Entered Catch: ', err);
+    res.status(401).send({ errorMessage: err.message });
   }
 });
 

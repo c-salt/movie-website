@@ -2,7 +2,7 @@ const app = module.exports = require('express')();
 
 // Get user ratings by username
 app.get('/user/:username', (req, res, next) => {
-    console.log(req.params, req.query);
+    //console.log(req.params, req.query);
     res.sendStatus(200);
 });
 

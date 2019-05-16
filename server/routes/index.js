@@ -1,8 +1,8 @@
 const app = module.exports = require('express').Router();
 
-app.use('/biggay', (req, res, next) => {
+app.get('/biggay', (req, res, next) => {
     console.log('test');
-    res.sendStatus(200);
+    res.sendStatus(401);
 });
 app.use('/user', require('./user'));
 app.use('/session', require('./session'));

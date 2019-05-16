@@ -53,7 +53,7 @@ class SignupPage extends React.Component {
             return;
         };
         axios.post(`${config.apiUrl}/user`, this.state).then(res => {
-            console.log(res);
+            //console.log(res);
             if (!res.success) {
                 alert(res.errorMessage);
             } else {

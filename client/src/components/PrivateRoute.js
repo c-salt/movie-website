@@ -1,12 +1,46 @@
-import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
+import axios from 'axios';
+import config from 'config';
 
-const PrivateRoute = ({ component: Component, ...rest }) => (
-	<Route {...rest} render={props => (
-		localStorage.getItem('user')
-			? <Component {...props} />
-			: <Redirect to={{ pathname: '/login', state: { from: props.location } }} />
-	)} />
-)
+export default function PrivateRoute (ComponentToProtect) {
+  return class extends Component {
+    constructor(props) {
+      super(props);
+      this.state = {
+        loading: true,
+        redirect: false,
+      };
+    }
 
-export { PrivateRoute };
+    componentDidMount() {
+			axios.get(`${config.apiUrl}/session/verify`)
+				.then(res => {
+					//console.log(res);
+          if (res.status === 200) {
+            this.setState({ loading: false });
+          } else {
+            const error = new Error(res.errorMessage);
+            throw error;
+          }
+				}).catch(e => {
+          console.log(e);
+          this.setState({ loading: false, redirect: true });
+        });
+    }
+    render() {
+      const { loading, redirect } = this.state;
+      if (loading) {
+        return null;
+      }
+      if (redirect) {
+        return <Redirect to="/login" />;
+      }
+      return (
+        <React.Fragment>
+          <ComponentToProtect {...this.props} />
+        </React.Fragment>
+      );
+    }
+  }
+}

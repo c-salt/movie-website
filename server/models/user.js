@@ -79,7 +79,7 @@ methods.doesUsernameExist = (username) => {
 methods.getAllUsers = () => {
     const db = getDatabase();
     const rows = db.prepare('SELECT * FROM users').all();
-    console.log(rows);
+    //console.log(rows);
     return rows;
 }
 
