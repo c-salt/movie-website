@@ -9,7 +9,6 @@ const withAuth = function(req, res, next) {
     req.headers['x-access-token'] ||
     req.cookies.token;
   
-  //console.log(token, req)
   if (!token) {
     res.status(401).send('Unauthorized: No token provided');
   } else {

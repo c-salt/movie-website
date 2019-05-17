@@ -39,25 +39,20 @@ class LoginPage extends React.Component {
             //console.log('Invalid form.');
             return;
         }
+        var headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        headers.append('Accept', 'application/json');
 
-        axios.post(`${config.apiUrl}/session`, {
-            //withCredentials: true,
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            data: this.state
-        }).then(res => {
-            //console.log(res);
-            if (res.status === 200) {
-                console.log('redirecting...')
-                this.props.history.push('/home');
-              } else {
-                const error = new Error(res.errorMessage);
-                //throw error;
-              }
-        }).catch(err => {
-            console.error(err);
-            alert('Error logging in please try again');
+        fetch(`${config.apiUrl}/session`, {
+            method: 'POST',
+            mode: 'cors',
+            redirect: 'follow',
+            credentials: 'include', // Don't forget to specify this if you need cookies
+            headers: headers,
+            body: JSON.stringify(this.state)
+        }).then((res) => {
+            console.log(res)
+            this.props.history.push('/home');
         });
     }
 

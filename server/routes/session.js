@@ -7,8 +7,7 @@ const secret = process.env.secret;
 
 // Login
 app.post('/', (req, res, next) => {
-  const { email, password } = req.body.data;
-  //console.log(email, password, req.body.data);
+  const { email, password } = req.body;
   try {
     const userid = userController.login(email, password);
     console.log('Session being created');
