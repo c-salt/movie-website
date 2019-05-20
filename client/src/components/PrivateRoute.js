@@ -14,19 +14,20 @@ export default function PrivateRoute (ComponentToProtect) {
     }
 
     componentDidMount() {
-			axios.get(`${config.apiUrl}/session/verify`)
-				.then(res => {
-					//console.log(res);
-          if (res.status === 200) {
-            this.setState({ loading: false });
-          } else {
-            const error = new Error(res.errorMessage);
-            throw error;
-          }
-				}).catch(e => {
-          console.log(e);
-          this.setState({ loading: false, redirect: true });
-        });
+      var headers = new Headers();
+      headers.append('Content-Type', 'application/json');
+      headers.append('Accept', 'application/json');
+      fetch(`${config.apiUrl}/session/verify`, {
+          method: 'GET',
+          mode: 'cors',
+          redirect: 'follow',
+          credentials: 'include', // Don't forget to specify this if you need cookies
+          headers: headers,
+      }).then((res) => {
+          console.log(res);
+      }).catch(e => {
+        this.setState({ loading: false, redirect: true });
+      });
     }
     render() {
       const { loading, redirect } = this.state;

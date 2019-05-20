@@ -8,7 +8,10 @@ const cookieParser = require('cookie-parser');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:8080',
+  credentials: true,
+}));
 app.use(cookieParser());
 app.use(routes);
 
