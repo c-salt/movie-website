@@ -1,8 +1,8 @@
 import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import { Icon } from './Icon';
-import PrivateRoute from './PrivateRoute';
+import { PrivateRoute } from './PrivateRoute';
 import { HomePage } from '../webpages/HomePage';
 import { LoginPage } from '../webpages/LoginPage';
 import { SignupPage } from '../webpages/SignupPage';
@@ -14,12 +14,12 @@ class App extends React.Component {
             <div className="application_wrapper">
                 <div className="application_routeHandler">
                     <Router>
-                        <div>
-                            <Route path="/home" component={PrivateRoute(HomePage)} />
-                            <Route path="/account" component={PrivateRoute(AccountPage)} />
+                        <Switch>
                             <Route path="/login" component={LoginPage} />
                             <Route path="/signup" component={SignupPage} />
-                        </div>
+                            <PrivateRoute path="/home" component={ HomePage } />
+                            <PrivateRoute path="/account" component={AccountPage} />
+                        </Switch>
                     </Router>
                     <div className="footer">
                         <p>

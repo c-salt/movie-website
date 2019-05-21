@@ -1,14 +1,11 @@
 import React from 'react';
 import config from 'config';
 import axios from 'axios';
-import { userService } from '../../services';
 import { Input } from '../../components/Input';
 
 class LoginPage extends React.Component {
     constructor(props) {
         super(props);
-
-        userService.logout();
 
         this.state = {
             email: '',

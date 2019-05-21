@@ -1,7 +1,6 @@
 import React from 'react';
 import config from 'config';
 import axios from 'axios';
-import { userService } from '../../services';
 import { Input } from '../../components/Input';
 
 class SignupPage extends React.Component {
