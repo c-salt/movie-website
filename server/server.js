@@ -3,20 +3,17 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const basicAuth = require('./middleware/basic-auth');
-const errorHandler = require('./utils/error-handler');
 const routes = require('./routes/index');
+const cookieParser = require('cookie-parser');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(cors());
-
-// use basic HTTP auth to secure the api
-// app.use(basicAuth);
-
+app.use(cors({
+  origin: 'http://localhost:8080',
+  credentials: true,
+}));
+app.use(cookieParser());
 app.use(routes);
-// global error handler
-// app.use(errorHandler);
 
 // start server
 const port = process.env.NODE_ENV === 'production' ? 80 : 4000;

@@ -1,7 +1,6 @@
 import React from 'react';
 import config from 'config';
 import axios from 'axios';
-import { userService } from '../../services';
 import { Input } from '../../components/Input';
 
 class SignupPage extends React.Component {
@@ -53,10 +52,11 @@ class SignupPage extends React.Component {
             return;
         };
         axios.post(`${config.apiUrl}/user`, this.state).then(res => {
+            //console.log(res);
             if (!res.success) {
-                alert(res.errorMessage);
+                alert(res);
             } else {
-                
+                alert(res);
             }
         })
     };

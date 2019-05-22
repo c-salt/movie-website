@@ -1,20 +1,15 @@
 import React from 'react';
-
-import { userService } from '../../services';
+import config from 'config';
+import axios from 'axios';
 import { Input } from '../../components/Input';
 
 class LoginPage extends React.Component {
     constructor(props) {
         super(props);
 
-        userService.logout();
-
         this.state = {
             email: '',
             password: '',
-            submitted: false,
-            loading: false,
-            error: ''
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -22,33 +17,40 @@ class LoginPage extends React.Component {
     }
 
     handleChange(e) {
-        const name = e.target.getAttribute('referencekey');
+        const name = e.target.getAttribute('name');
         const value = e.target.value;
-        this.setState({ [name]: value });
+        this.setState({ 
+            [name]: value 
+        });
+        //console.log(name, value);
     }
 
     handleSubmit(e) {
-        console.log('Submitting: ', this.state);
+        //console.log('Submitting: ', this.state);
         e.preventDefault();
 
-        this.setState({ submitted: true });
-        const { email, password, returnUrl } = this.state;
+        const { email, password } = this.state;
 
         // stop here if form is invalid
         if (!(email && password)) {
-            console.log('Invalid form.');
+            //console.log('Invalid form.');
             return;
         }
+        var headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        headers.append('Accept', 'application/json');
 
-        this.setState({ loading: true });
-        userService.login(email, password)
-            .then(
-                user => {
-                    const { from } = this.props.location.state || { from: { pathname: "/" } };
-                    this.props.history.push(from);
-                },
-                error => this.setState({ error, loading: false })
-            );
+        fetch(`${config.apiUrl}/session`, {
+            method: 'POST',
+            mode: 'cors',
+            redirect: 'follow',
+            credentials: 'include', // Don't forget to specify this if you need cookies
+            headers: headers,
+            body: JSON.stringify(this.state)
+        }).then((res) => {
+            console.log(res)
+            this.props.history.push('/home');
+        });
     }
 
     render() {
@@ -61,14 +63,14 @@ class LoginPage extends React.Component {
                         <form name="form" onSubmit={this.handleSubmit}>
                             <Input 
                                 text="Email Address" 
-                                referencekey="email"
+                                name="email"
                                 type="text"
                                 value={this.state.email}
                                 onChange={this.handleChange} 
                             />
                             <Input 
                                 text="Password" 
-                                referencekey="password"
+                                name="password"
                                 ref="password"
                                 type="password" 
                                 value={this.state.password}
