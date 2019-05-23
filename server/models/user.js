@@ -88,9 +88,15 @@ methods.getAllUsers = () => {
  * @param {String} email
  * @returns {Object}
  */
-methods.findUser = (email) => {
+methods.findUserByEmail = (email) => {
     const db = getDatabase();
     const rows = db.prepare('SELECT * FROM users WHERE email=?').all(email);
+    return rows;
+}
+
+methods.findUserByUserID = (userid) => {
+    const db = getDatabase();
+    const rows = db.prepare('SELECT * FROM users WHERE userid=?').all(userid);
     return rows;
 }
 

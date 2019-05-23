@@ -1,21 +1,27 @@
 const userController = require('../controllers/user');
-
+const withAuth = require('../middleware/authentication');
 const app = module.exports = require('express').Router();
 
 // Get user info
-app.get('/', (req, res, next) => {
-    console.log(req.body);
-    res.sendStatus(200);
+app.get('/', withAuth, (req, res, next) => {
+        const userid = res.userid;
+        try{
+            const user = userController.getUser(userid);
+            res.json(JSON.stringify(user));
+            console.log(res);
+        } catch (err) {
+            res.status(200).send({
+                success: false,
+                errorMessage: err.message
+            });
+        }
 });
 
 //Create user
 app.post('/', (req, res, next) => {
-    //console.log(req.body);
     const { email, username, password } = req.body;
-    //console.log(email, username, password);
     try {
         userController.createAccount(email, username, password);
-        //console.log('User being created');
         res.status(200).send({
             success: true
         });
