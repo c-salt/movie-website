@@ -1,4 +1,5 @@
 import React from 'react';
+import config from 'config';
 
 class AccountPage extends React.Component {
   constructor(props) {
@@ -15,8 +16,19 @@ class AccountPage extends React.Component {
   }
 
   render() {
+    fetch(`${config.apiUrl}/user`, {
+      method: 'GET',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      }
+    }).then((res) => {
+      console.log('RESPONSE: ', res);
+    });
     return (
-      <div><p>TEST PARAGRAPH</p>></div>
+      <div><p>TEST PARAGRAPH</p></div>
     );
   }
 }

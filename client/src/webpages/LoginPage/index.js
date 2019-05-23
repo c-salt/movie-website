@@ -36,19 +36,19 @@ class LoginPage extends React.Component {
             //console.log('Invalid form.');
             return;
         }
-        var headers = new Headers();
-        headers.append('Content-Type', 'application/json');
-        headers.append('Accept', 'application/json');
 
         fetch(`${config.apiUrl}/session`, {
             method: 'POST',
             mode: 'cors',
             redirect: 'follow',
             credentials: 'include', // Don't forget to specify this if you need cookies
-            headers: headers,
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
             body: JSON.stringify(this.state)
         }).then((res) => {
-            console.log(res)
+            console.log(res);
             this.props.history.push('/home');
         });
     }
