@@ -94,6 +94,11 @@ methods.findUserByEmail = (email) => {
     return rows;
 }
 
+/**
+ * Returns user information for a given userID
+ * @param {String} userid
+ * @returns {Object}
+ */
 methods.findUserByUserID = (userid) => {
     const db = getDatabase();
     const rows = db.prepare('SELECT * FROM users WHERE userid=?').all(userid);

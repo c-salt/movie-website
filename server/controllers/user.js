@@ -26,20 +26,18 @@ methods.createAccount = (email, username, password) => {
 
 methods.login = (email, password) => {
     const user = model.findUserByEmail(email);
-    if (user === []) {
+    if (user.length === 0) {
         throw new Error('User does not exist');
     }
-
     if (!comparePasswords(password, user[0].password)) {
         throw new Error('Email or password is incorrect');
     }
     return user[0].userid;
-
 };
 
 methods.getUser = (userid) => {
     const user = model.findUserByUserID(userid);
-    if (user === []){
+    if (user.length === 0){
         throw new Error('User does not exist');
     }
     return user;

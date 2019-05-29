@@ -15,9 +15,8 @@ app.post('/', (req, res, next) => {
     const token = jwt.sign(payload, secret, {
       expiresIn: '1h'
     });
-    console.log('Generated token: ', token);
     res.cookie('token', token, { httpOnly: true });
-    res.sendStatus(200);
+    res.status(200).send({ successMessage: 'Success' });
 
   } catch (err) {
     console.log('Entered Catch: ', err);

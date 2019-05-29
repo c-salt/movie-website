@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 
 class InputError extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
   }
 
@@ -11,15 +11,14 @@ class InputError extends React.Component {
 
       error_container: true,
       visible: this.props.errorVisible,
-      invisible: !this.props.errorVisible
-    })
-    return(
-    <div className={errorClass}>
-      <span>{this.props.errorMessage}</span>
-    </div>
-    )
+      invisible: !this.props.errorVisible,
+    });
+    return (
+      <div className={errorClass}>
+        <span>{this.props.errorMessage}</span>
+      </div>
+    );
   }
-
 }
 
 export { InputError };
