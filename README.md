@@ -21,14 +21,14 @@ MovieTogether is also multi-platform! As a user of MovieTogether you have the ch
 ## Using MovieTogether
 Here is a quick explanation of all of MovieTogether's features.
 
->### Using The Movie Superlist
+### Using The Movie Superlist
 
->### Creating Your Account
+### Creating Your Account
 
->### Linking To Discord
+### Linking To Discord
 
->### Rating Movies
+### Rating Movies
 
->### User Rating Lists
+### User Rating Lists
 
 ## Future Plans
