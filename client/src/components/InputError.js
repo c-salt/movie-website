@@ -1,11 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 class InputError extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     const errorClass = classNames({
 
@@ -20,5 +17,10 @@ class InputError extends React.Component {
     );
   }
 }
+
+InputError.propTypes = {
+  errorVisible: PropTypes.bool.isRequired,
+  errorMessage: PropTypes.string.isRequired,
+};
 
 export { InputError };

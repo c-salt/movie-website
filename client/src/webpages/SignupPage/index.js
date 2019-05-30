@@ -1,6 +1,7 @@
+/* eslint-disable no-useless-escape */
 import React from 'react';
 import config from 'config';
-import axios from 'axios';
+import _ from 'lodash';
 import { Input } from '../../components/Input';
 
 class SignupPage extends React.Component {
@@ -34,7 +35,7 @@ class SignupPage extends React.Component {
 
   handlePasswordChange(e) {
     this.setState({
-      password: event.target.value,
+      password: e.target.value,
     }, () => {
       if (!_.isEmpty(this.state.confirmedPassword)) {
         this.refs.confirmedPassword.isValid();
@@ -49,8 +50,17 @@ class SignupPage extends React.Component {
     if (!allValid) {
       return;
     }
-    axios.post(`${config.apiUrl}/user`, this.state).then((res) => {
-      // console.log(res);
+    fetch(`${config.apiUrl}/user`, {
+      method: 'POST',
+      mode: 'cors',
+      redirect: 'follow',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      body: JSON.stringify(this.state),
+    }).then(res => res.json()).then((res) => {
       if (!res.success) {
         alert(res);
       } else {
@@ -79,13 +89,13 @@ class SignupPage extends React.Component {
         <div className="create_account_form">
           <div className="form_wrapper">
             <h1>SIGN UP</h1>
-            <h2 />
             <form name="form" onSubmit={this.handleSubmit}>
               <Input
                 text="Email Address"
                 ref="email"
                 name="email"
                 type="email"
+                hasHelpbox={false}
                 defaultValue={this.state.email}
                 validate={this.validateEmail}
                 value={this.state.email}
@@ -99,6 +109,7 @@ class SignupPage extends React.Component {
                 ref="username"
                 name="username"
                 type="text"
+                hasHelpbox={false}
                 defaultValue={this.state.username}
                 validate={this.validateUsername}
                 value={this.state.username}
@@ -114,9 +125,6 @@ class SignupPage extends React.Component {
                 type="password"
                 defaultValue={this.state.password}
                 minCharacters="6"
-                requireCapitals
-                requireNumbers
-                requireSpecialCharacters
                 value={this.state.password}
                 hasHelpbox
                 onChange={this.handlePasswordChange}
@@ -129,6 +137,7 @@ class SignupPage extends React.Component {
                 ref="confirmedPassword"
                 name="confirmedPassword"
                 type="password"
+                hasHelpbox={false}
                 defaultValue={this.state.confirmedPassword}
                 value={this.state.confirmedPassword}
                 onChange={this.handleChange}
@@ -141,12 +150,12 @@ class SignupPage extends React.Component {
                 type="submit"
                 className="button button_wide"
               >
-                            CREATE ACCOUNT
+                CREATE ACCOUNT
               </button>
             </form>
             <p>
-Already have an account?
-              <a href="/login">Login</a>
+              Already have an account?
+              <a href="/login"> Login</a>
             </p>
           </div>
         </div>

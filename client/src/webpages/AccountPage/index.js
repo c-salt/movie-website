@@ -21,11 +21,7 @@ class AccountPage extends React.Component {
         'Content-Type': 'application/json',
         Accept: 'application/json',
       },
-    }).then((res) => {
-      console.log(res);
-      return res.json();
-    }).then((res) => {
-      console.log(res);
+    }).then(res => res.json()).then((res) => {
       this.setState({
         userId: res.userid,
         email: res.email,
@@ -51,7 +47,10 @@ class AccountPage extends React.Component {
           <p>{this.state.discordVerified.toString().toUpperCase()}</p>
           <h2>EMAIL VERIFIED</h2>
           <p>{this.state.emailVerified.toString().toUpperCase()}</p>
-          <h3>Return to <a href="/">home.</a></h3>
+          <h3>
+            Return to
+            <a href="/"> home.</a>
+          </h3>
         </div>
       </div>
     );

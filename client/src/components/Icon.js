@@ -1,10 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 class Icon extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     switch (this.props.type) {
       case 'circle_error':
@@ -77,8 +74,15 @@ class Icon extends React.Component {
             />
           </svg>
         );
+
+      default:
+        return (<div />);
     }
   }
 }
+
+Icon.propTypes = {
+  type: PropTypes.string.isRequired,
+};
 
 export { Icon };

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import _ from 'lodash';
 import classnames from 'classnames';
 import { InputError } from './InputError';
@@ -11,7 +12,6 @@ class Input extends React.Component {
     this.state = {
       value: this.props.value,
       empty: true,
-      submitted: false,
       focus: false,
       valid: true,
       hasHelpbox: this.props.hasHelpbox || false,
@@ -19,7 +19,6 @@ class Input extends React.Component {
       helpboxData: [],
       errorVisible: false,
       errorMessage: this.props.emptyMessage,
-      type: this.props.type,
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleBlur = this.handleBlur.bind(this);
@@ -50,12 +49,12 @@ class Input extends React.Component {
     });
   }
 
-  handleBlur(e) {
-    this.setState({
+  handleBlur() {
+    this.setState(prevState => ({
       focus: false,
       helpboxVisible: false,
-      errorVisible: !this.state.valid,
-    });
+      errorVisible: !prevState.valid,
+    }));
   }
 
   handleFocus(e) {
@@ -69,7 +68,7 @@ class Input extends React.Component {
     }
   }
 
-  mouseEnterError(e) {
+  mouseEnterError() {
     if (!this.state.hasHelpbox || !this.state.helpboxVisible) {
       this.setState({
         errorVisible: true,
@@ -77,7 +76,7 @@ class Input extends React.Component {
     }
   }
 
-  mouseLeaveError(e) {
+  mouseLeaveError() {
     if (this.state.focus) {
       this.setState({
         errorVisible: false,
@@ -85,7 +84,7 @@ class Input extends React.Component {
     }
   }
 
-  hideError(e) {
+  hideError() {
     this.setState({
       helpboxVisible: false,
       errorVisible: false,
@@ -107,18 +106,22 @@ class Input extends React.Component {
   checkRules(value) {
     const helpboxData = [
       {
-        valid: !_.isEmpty(value) ? value.length >= parseInt(this.props.minCharacters) : false,
+        name: 'MinimumCharacters',
+        valid: !_.isEmpty(value) ? value.length >= parseInt(this.props.minCharacters, 10) : false,
         errorMessage: `The password must be at least ${this.props.minCharacters} characters`,
       },
       {
+        name: 'CapitalLetters',
         valid: !_.isEmpty(value) ? this.hasCapital(value) : false,
         errorMessage: 'The password must contain at least one capital letter',
       },
       {
+        name: 'AtLeastOneNumber',
         valid: !_.isEmpty(value) ? this.hasNumber(value) : false,
         errorMessage: 'The password must contain at least one number',
       },
       {
+        name: 'SpecialCharacter',
         valid: !_.isEmpty(value) ? this.hasSpecialCharacter(value) : false,
         errorMessage: 'The password must contain at least one special character [!@#$%^&*?]',
       },
@@ -144,11 +147,11 @@ class Input extends React.Component {
       });
       return true;
     } if (this.props.validate && !this.props.validate(value)) {
-      this.setState({
+      this.setState(prevState => ({
         valid: false,
-        errorVisible: !this.state.focus,
+        errorVisible: !prevState.focus,
         errorMessage: _.isEmpty(value) ? this.props.emptyMessage : this.props.errorMessage,
-      });
+      }));
       return false;
     }
     if (this.state.hasHelpbox && this.checkRules(this.state.value)) {
@@ -165,6 +168,7 @@ class Input extends React.Component {
       });
       return false;
     }
+    return false;
   }
 
   render() {
@@ -179,9 +183,8 @@ class Input extends React.Component {
     });
     let helpbox;
     if (this.state.hasHelpbox) {
-      helpbox = 				(
+      helpbox = (
         <Helpbox
-          ref="helpbox"
           visible={this.state.helpboxVisible}
           name={this.props.text}
           value={this.state.value}
@@ -228,5 +231,24 @@ class Input extends React.Component {
     );
   }
 }
+
+Input.propTypes = {
+  emptyMessage: PropTypes.string.isRequired,
+  errorMessage: PropTypes.string.isRequired,
+  hasHelpbox: PropTypes.bool.isRequired,
+  minCharacters: PropTypes.string,
+  name: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  placeholder: PropTypes.string.isRequired,
+  text: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+  validate: PropTypes.func,
+  value: PropTypes.string.isRequired,
+};
+
+Input.defaultProps = {
+  validate: null,
+  minCharacters: 6,
+};
 
 export { Input };

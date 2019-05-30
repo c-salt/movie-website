@@ -1,19 +1,9 @@
 import React from 'react';
-import _ from 'lodash';
+import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Icon } from './Icon';
 
 class Helpbox extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      value: null,
-      hasCapital: this.props.hasCapital,
-      hasSpecialCharacter: this.props.hasSpecialCharacter,
-      name: this.props.name,
-    };
-  }
-
   render() {
     // console.log('Helpbox props:', this.props)
     const validatorClass = classnames({
@@ -24,7 +14,7 @@ class Helpbox extends React.Component {
 
     let helpboxTitle;
     const valid = Object.values(this.props.helpboxData).every(ele => ele.valid === true);
-    if (valid && this.props.value != '') {
+    if (valid && this.props.value !== '') {
       helpboxTitle = (
         <h4 className="validator_title valid">
           {this.props.name}
@@ -35,27 +25,20 @@ IS OK
     } else {
       helpboxTitle = (
         <h4 className="validator_title invalid">
-          {this.props.name}
-          {' '}
-RULES
+          {`${this.props.name} RULES`}
         </h4>
       );
     }
-    const { helpboxData } = this.props;
     const ruleMessages = [];
 
-    this.props.helpboxData.forEach((rule, index) => {
+    this.props.helpboxData.forEach((rule) => {
       ruleMessages.push(
-        <li key={index} className={classnames({ valid: rule.valid })}>
+        <li key={rule.name} className={classnames({ valid: rule.valid })}>
           <i className="icon_valid">
-            {' '}
             <Icon type="circle_tick_filled" />
-            {' '}
           </i>
           <i className="icon_invalid">
-            {' '}
             <Icon type="circle_error" />
-            {' '}
           </i>
           <span className="error_message">{rule.errorMessage}</span>
         </li>,
@@ -75,5 +58,12 @@ RULES
     );
   }
 }
+
+Helpbox.propTypes = {
+  helpboxData: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.object])).isRequired,
+  name: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
+  visible: PropTypes.bool.isRequired,
+};
 
 export { Helpbox };
