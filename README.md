@@ -4,13 +4,13 @@
 This README will briefly go over account creation, website usage, and future website plans.
 
 ## Table of Contents
-- [About](##What-Is-MovieTogether?)
-- [Usage](##Using-MovieTogether)
-- [Movie Superlist](###Using-The-Movie-Superlist)
-  - [Account Creation](###Creating-Your-Account)
-  - [Linking To Discord](###Linking-To-Discord)
-  - [Rating Movies](###Rating-Movies)
-  - [Rating Lists](###User-Rating-Lists)
+- [About](#What-Is-MovieTogether?)
+- [Usage](#Using-MovieTogether)
+- [Movie Superlist](#Using-The-Movie-Superlist)
+  - [Account Creation](#Creating-Your-Account)
+  - [Linking To Discord](#Linking-To-Discord)
+  - [Rating Movies](#Rating-Movies)
+  - [Rating Lists](#User-Rating-Lists)
 - [Future Plans]()
 
 ## What is MovieTogether?
