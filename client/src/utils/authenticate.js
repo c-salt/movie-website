@@ -8,8 +8,8 @@ function authenticate() {
     credentials: 'include', // Don't forget to specify this if you need cookies
     headers: {
       'Content-Type': 'application/json',
-      Accept: 'application/json'
-    }
+      Accept: 'application/json',
+    },
   }).then((res) => {
     if (res.status !== 200) {
       return false;
