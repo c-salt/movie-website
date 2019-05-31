@@ -4,9 +4,9 @@ const app = module.exports = require('express').Router();
 
 // Get user info
 app.get('/', withAuth, (req, res, next) => {
-        const userid = res.userid;
         try{
-            const user = userController.getUser(userid);
+            const user = userController.getUser(res.userid);
+            delete user[0].password;
             res.status(200).send(user[0]);
         } catch (err) {
             res.status(200).send({
