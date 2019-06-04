@@ -61,11 +61,28 @@ class SignupPage extends React.Component {
       },
       body: JSON.stringify(this.state),
     }).then(res => res.json()).then((res) => {
+      console.log(res);
       if (!res.success) {
-        alert(res);
-      } else {
-        alert(res);
+        throw new Error(res.errorMessage);
       }
+      fetch(`${config.apiUrl}/session`, {
+        method: 'POST',
+        mode: 'cors',
+        redirect: 'follow',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify(this.state),
+      }).then(res => res.json()).then((res) => {
+        if (res.errorMessage) {
+          throw new Error(res.errorMessage);
+        }
+        this.props.history.push('/');
+      });
+    }).catch((err) => {
+      alert(err);
     });
   }
 

@@ -45,7 +45,7 @@ class LoginPage extends React.Component {
       if (res.errorMessage) {
         throw new Error(res.errorMessage);
       }
-      this.props.history.push('/home');
+      this.props.history.push('/');
     }).catch((err) => {
       alert(err);
     });
