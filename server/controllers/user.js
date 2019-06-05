@@ -43,4 +43,14 @@ methods.getUser = (userid) => {
     return user;
 }
 
+methods.updateAccount = (body) => {
+    let userid = (body.discord_id !== undefined) ? model.getUserIDFromDiscordID(body.discord_id) : body.userid;
+    console.log(userid);
+    methods.getUser(userid);
+    
+    for(const key of Object.keys(body.data)){
+        model.updateUserByUserID(key, body.data[key], userid);
+    }
+}
+
 module.exports = methods;

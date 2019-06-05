@@ -33,15 +33,25 @@ app.post('/', (req, res, next) => {
 });
 
 //Update user info
-app.patch('/', (req, res, next) => {
-    //console.log('i am patching ur mum, fear me');
-    //console.log(req.body);
-    res.sendStatus(200);
+app.patch('/', withAuth, (req, res, next) => {
+    console.log('Patch invoked');
+    console.log(req.body);
+    try {
+        userController.updateAccount(req.body);
+        res.status(200).send({
+            success: true
+        });
+    } catch (err) {
+        res.status(200).send({
+            success: false,
+            errorMessage: err.message
+        });
+    }
 });
 
 
 //Delete user info
-app.delete('/', (req, res, next) => {
+app.delete('/', withAuth, (req, res, next) => {
     //console.log('i am deleting ur face, fear me');
     //console.log(req.body);
     res.sendStatus(200);

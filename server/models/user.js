@@ -105,4 +105,40 @@ methods.findUserByUserID = (userid) => {
     return rows;
 }
 
+methods.updateUserByUserID = (key, value, userid) => {
+    const db = getDatabase();
+    switch (key) {
+        case 'discord_id': 
+            db.prepare('UPDATE users SET discord_id=? WHERE userid=?').run(value, userid);
+            break;
+        case 'username': 
+            db.prepare('UPDATE users SET username=? WHERE userid=?').run(value, userid);
+            break;
+        case 'password': 
+            db.prepare('UPDATE users SET password=? WHERE userid=?').run(value, userid);
+            break;
+        case 'email': 
+            db.prepare('UPDATE users SET email=? WHERE userid=?').run(value, userid);
+            break;
+        case 'email_verified': 
+            db.prepare('UPDATE users SET email_verified=? WHERE userid=?').run(value, userid);
+            break;
+        case 'discord_verified':
+            db.prepare('UPDATE users SET discord_verified=? WHERE userid=?').run(value, userid);
+            break;
+        default:
+            throw new Error('Invalid key passed');
+    }
+}
+
+methods.getUserIDFromDiscordID = (discord_id) => {
+    const db = getDatabase();
+    const userid = db.prepare('SELECT userid FROM users WHERE discord_id=? LIMIT 1').all(discord_id);
+    if (userid.length === 1){
+        return userid[0].userid;
+    } else {
+        throw new Error('Discord account not attached to a UserID');
+    }
+}
+
 module.exports = methods;
