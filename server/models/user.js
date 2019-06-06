@@ -1,6 +1,7 @@
 const sqlite3 = require('better-sqlite3');
 const path = require('path');
 const bcrypt = require('bcrypt');
+const permission = require('../utils/permissions');
 
 const methods = {};
 const USER_ID_LENGTH = 6;
@@ -45,8 +46,10 @@ methods.addUser = (email, username, password) => {
     const email_verified = 0;
     const discord_verified = 0;
     const hashedPassword = saltAndHashPassword(password);
-    db.prepare('INSERT INTO users(userid,email,username,password,discord_id,email_verified,discord_verified) VALUES (?,?,?,?,?,?,?)').run(
-          userid, email, username, hashedPassword, null, email_verified, discord_verified
+    const permission_level = permission.role.DEFAULT;
+
+    db.prepare('INSERT INTO users(userid,email,username,password,discord_id,email_verified,discord_verified,permission_level) VALUES (?,?,?,?,?,?,?,?)').run(
+          userid, email, username, hashedPassword, null, email_verified, discord_verified, permission_level
     );
 };
 
@@ -105,6 +108,9 @@ methods.findUserByUserID = (userid) => {
     return rows;
 }
 
+/**
+ * 
+ */
 methods.updateUserByUserID = (key, value, userid) => {
     const db = getDatabase();
     switch (key) {

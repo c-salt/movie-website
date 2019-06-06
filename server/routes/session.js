@@ -9,7 +9,7 @@ const secret = process.env.secret;
 app.post('/', (req, res, next) => {
   const { email, password } = req.body;
   try {
-    const userid = userController.login(email, password);
+    const userid = userController.verifyLogin(email, password);
     console.log('Session being created');
     const payload = { userid };
     const token = jwt.sign(payload, secret, {

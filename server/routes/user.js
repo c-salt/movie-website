@@ -5,7 +5,7 @@ const app = module.exports = require('express').Router();
 // Get user info
 app.get('/', withAuth, (req, res, next) => {
         try{
-            const user = userController.getUser(res.userid);
+            const user = userController.getAccount(req.body.userid);
             delete user[0].password;
             res.status(200).send(user[0]);
         } catch (err) {
@@ -48,7 +48,6 @@ app.patch('/', withAuth, (req, res, next) => {
         });
     }
 });
-
 
 //Delete user info
 app.delete('/', withAuth, (req, res, next) => {

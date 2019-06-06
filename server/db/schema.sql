@@ -6,6 +6,7 @@ CREATE TABLE users(
     discord_id VARCHAR(20) UNIQUE,
     email_verified BOOLEAN NOT NULL,
     discord_verified BOOLEAN NOT NULL,
+    permission_level NUMBER NOT NULL,
     created TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     PRIMARY KEY(userid)
 );
@@ -20,6 +21,9 @@ CREATE TABLE movies(
     imdb_rating VARCHAR(4) NOT NULL,
     rotten_tomatoes_rating VARCHAR(4) NOT NULL,
     future_movie BOOLEAN NOT NULL,
+    added_by VARCHAR(6) NOT NULL,
+    created TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    FOREIGN KEY(added_by) REFERENCES users(userid) ON DELETE NO ACTION,
     PRIMARY KEY(imdb_id)
 );
 
@@ -41,6 +45,7 @@ CREATE TABLE ratings(
     concept DECIMAL(2,1),
     execution DECIMAL(2,1),
     experience DECIMAL(2,1),
+    created TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     FOREIGN KEY(userid) REFERENCES users(userid) ON DELETE CASCADE,
     FOREIGN KEY(imdb_id) REFERENCES movies(imdb_id) ON DELETE CASCADE,
     PRIMARY KEY(userid, imdb_id)
