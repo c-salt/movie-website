@@ -4,16 +4,15 @@ const app = module.exports = require('express').Router();
 
 // Get user info
 app.get('/', withAuth, (req, res, next) => {
-        try{
-            const user = userController.getAccount(req.body.userid);
-            delete user[0].password;
-            res.status(200).send(user[0]);
-        } catch (err) {
-            res.status(200).send({
-                success: false,
-                errorMessage: err.message
-            });
-        }
+    try{
+        const user = userController.getAccount(req.body.userid);
+        delete user.password;
+        res.status(200).send(user);
+    } catch (err) {
+        res.status(400).send({
+            errorMessage: err.message
+        });
+    }
 });
 
 //Create user
@@ -21,12 +20,9 @@ app.post('/', (req, res, next) => {
     const { email, username, password } = req.body;
     try {
         userController.createAccount(email, username, password);
-        res.status(200).send({
-            success: true
-        });
+        res.sendStatus(201);
     } catch (err) {
-        res.status(200).send({
-            success: false,
+        res.status(400).send({
             errorMessage: err.message
         });
     }
@@ -38,12 +34,9 @@ app.patch('/', withAuth, (req, res, next) => {
     console.log(req.body);
     try {
         userController.updateAccount(req.body);
-        res.status(200).send({
-            success: true
-        });
+        res.sendStatus(204);
     } catch (err) {
-        res.status(200).send({
-            success: false,
+        res.status(400).send({
             errorMessage: err.message
         });
     }

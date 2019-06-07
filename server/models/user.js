@@ -139,7 +139,7 @@ methods.updateUserByUserID = (key, value, userid) => {
 
 methods.getUserIDFromDiscordID = (discord_id) => {
     const db = getDatabase();
-    const userid = db.prepare('SELECT userid FROM users WHERE discord_id=? LIMIT 1').all(discord_id);
+    const userid = db.prepare('SELECT userid FROM users WHERE discord_id=?').all(discord_id);
     if (userid.length === 1){
         return userid[0].userid;
     } else {

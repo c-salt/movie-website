@@ -57,7 +57,7 @@ methods.getAccount = (userid) => {
     if (user.length === 0){
         throw new Error('User does not exist');
     }
-    return user;
+    return user[0];
 }
 
 /**
