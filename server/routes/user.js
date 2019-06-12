@@ -48,3 +48,15 @@ app.delete('/', withAuth, (req, res, next) => {
     //console.log(req.body);
     res.sendStatus(200);
 });
+
+//Check if a user is connected
+app.get('/connected', withAuth, (req, res, next) => {
+    try {
+        userController.getVerified(req.body.discord_id);
+        res.sendStatus(200);
+    } catch(err) {
+        res.status(400).send({
+            errorMessage: err.message
+        });
+    }
+});

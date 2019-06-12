@@ -5,6 +5,11 @@ app.get('/', (req, res, next) => {
 
 });
 
+// Create and add a movie to the super/future list.
+app.post('/', (req, res, next) => {
+
+});
+
 // Get movie by genre
 app.get('/genre', (req, res, next) => {
 

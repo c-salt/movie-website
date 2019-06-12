@@ -58,7 +58,7 @@ methods.getAccount = (userid) => {
         throw new Error('User does not exist');
     }
     return user[0];
-}
+};
 
 /**
  * Updates an account, can update multiple values at a time
@@ -72,6 +72,16 @@ methods.updateAccount = (body) => {
     for(const key of Object.keys(body.data)){
         model.updateUserByUserID(key, body.data[key], userid);
     }
-}
+};
+
+/**
+ * Verifies that a discord_id is connected to a user
+ * @param {String} discord_id
+ * @returns {Boolean}
+ */
+methods.getVerified = (discord_id) => {
+    model.getUserIDFromDiscordID(discord_id);
+    return true;
+};
 
 module.exports = methods;
