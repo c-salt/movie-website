@@ -9,6 +9,7 @@ class AccountPage extends React.Component {
       userId: '',
       email: '',
       username: '',
+      permissionLevel: 0,
       discordVerified: false,
       emailVerified: false,
     };
@@ -26,6 +27,7 @@ class AccountPage extends React.Component {
         userId: res.userid,
         email: res.email,
         username: res.username,
+        permissionLevel: res.permission_level,
         discordVerified: !!res.discord_verified,
         emailVerified: !!res.email_verified,
       });
@@ -39,6 +41,8 @@ class AccountPage extends React.Component {
         <div className="account_fields_wrapper">
           <h2>USERID</h2>
           <p>{this.state.userId}</p>
+          <h2>PERMISSION LEVEL</h2>
+          <p>{this.state.permissionLevel}</p>
           <h2>EMAIL</h2>
           <p>{this.state.email}</p>
           <h2>USERNAME</h2>

@@ -16,7 +16,7 @@ app.post('/', (req, res, next) => {
       expiresIn: '1h'
     });
     res.cookie('token', token, { httpOnly: true });
-    res.status(200).send({ successMessage: 'Success' });
+    res.sendStatus(200);
 
   } catch (err) {
     console.log('Entered Catch: ', err);

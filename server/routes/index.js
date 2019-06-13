@@ -7,4 +7,4 @@ app.get('/biggay', (req, res, next) => {
 app.use('/user', require('./user'));
 app.use('/session', require('./session'));
 app.use('/ratings', require('./ratings'));
-app.use('/movies', require('./movies'));
+app.use('/movie', require('./movie'));

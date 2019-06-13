@@ -1,4 +1,10 @@
 module.exports = {
+    canUserAddMovie: function(userid, isFutureMovie) {
+        const userModel = require('../models/user');
+        const permissionLevel = userModel.getUserPermissionLevel(userid);
+        console.log('User permissionLevel: ', permissionLevel, '. permissionLevel Type: ', typeof permissionLevel);
+        return (isFutureMovie) ? permissionLevel & this.permission.ADD_MOVIE_FUTURELIST : permissionLevel & this.permission.ADD_MOVIE_SUPERLIST;
+    },
     permission: {
         OWNER: 1,
         RATE_MOVIE: 2,

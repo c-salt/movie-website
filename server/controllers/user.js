@@ -27,7 +27,7 @@ methods.createAccount = (email, username, password) => {
         throw new Error('Username already exists');
     }
 
-    model.addUser(email, username, password);
+    return model.addUser(email, username, password);
 };
 
 /**

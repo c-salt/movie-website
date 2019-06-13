@@ -1,6 +1,9 @@
+const jwt = require('jsonwebtoken');
 const userController = require('../controllers/user');
 const withAuth = require('../middleware/authentication');
 const app = module.exports = require('express').Router();
+
+const secret = process.env.secret;
 
 // Get user info
 app.get('/', withAuth, (req, res, next) => {
@@ -19,7 +22,11 @@ app.get('/', withAuth, (req, res, next) => {
 app.post('/', (req, res, next) => {
     const { email, username, password } = req.body;
     try {
-        userController.createAccount(email, username, password);
+        const userid = userController.createAccount(email, username, password);
+        const token = jwt.sign({ userid }, secret, {
+            expiresIn: '1h'
+          });
+        res.cookie('token', token, { httpOnly: true });
         res.sendStatus(201);
     } catch (err) {
         res.status(400).send({

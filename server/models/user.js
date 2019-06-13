@@ -6,6 +6,8 @@ const permission = require('../utils/permissions');
 const methods = {};
 const USER_ID_LENGTH = 6;
 
+module.exports = methods;
+
 /**
  * Salts and hashes provided password
  * @param {String} password
@@ -51,6 +53,8 @@ methods.addUser = (email, username, password) => {
     db.prepare('INSERT INTO users(userid,email,username,password,discord_id,email_verified,discord_verified,permission_level) VALUES (?,?,?,?,?,?,?,?)').run(
           userid, email, username, hashedPassword, null, email_verified, discord_verified, permission_level
     );
+
+    return userid;
 };
 
 /**
@@ -109,7 +113,10 @@ methods.findUserByUserID = (userid) => {
 }
 
 /**
- * 
+ * Update any of a users fields for a given userID
+ * @param {String} key
+ * @param {String} value
+ * @param {String} userid
  */
 methods.updateUserByUserID = (key, value, userid) => {
     const db = getDatabase();
@@ -137,14 +144,32 @@ methods.updateUserByUserID = (key, value, userid) => {
     }
 }
 
+/**
+ * Gets the userid that a discord_id is connected to
+ * @param {String} discord_id
+ * @returns {String}
+ */
 methods.getUserIDFromDiscordID = (discord_id) => {
     const db = getDatabase();
     const userid = db.prepare('SELECT userid FROM users WHERE discord_id=?').all(discord_id);
-    if (userid.length === 1){
+    if (userid.length === 1) {
         return userid[0].userid;
     } else {
         throw new Error('Discord account not attached to a UserID');
     }
 }
 
-module.exports = methods;
+/**
+ * Gets the user permission level integer
+ * @param {String} userid
+ * @returns {String}
+ */
+methods.getUserPermissionLevel = (userid) => {
+    const db = getDatabase();
+    const permissionLevel = db.prepare('SELECT permission_level FROM users WHERE userid=?').all(userid);
+    if (permissionLevel.length === 1) {
+        return permissionLevel[0].permission_level;
+    } else {
+        throw new Error('Permission level not found for supplied UserID');
+    }
+}

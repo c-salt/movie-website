@@ -41,11 +41,12 @@ class LoginPage extends React.Component {
         Accept: 'application/json',
       },
       body: JSON.stringify(this.state),
-    }).then(res => res.json()).then((res) => {
-      if (res.errorMessage) {
-        throw new Error(res.errorMessage);
+    }).then((res) => {
+      if (res.status != 200) {
+        res.json().then(res => { throw new Error(res.errorMessage) }).catch(err => alert(err));
+      } else {
+        this.props.history.push('/');
       }
-      this.props.history.push('/');
     }).catch((err) => {
       alert(err);
     });
