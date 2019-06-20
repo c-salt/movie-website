@@ -11,11 +11,13 @@ app.get('/', (req, res, next) => {
 app.post('/', (req, res, next) => {
   try {
     console.log(`Calling addMovie function with body: ${req.body}`);
-    movieController.addMovie(req.body).then(() => {
-      res.sendStatus(200);
+    movieController.addMovie(req.body).then((movieInfo) => {
+      console.log('Movie Information in Route: ', movieInfo);
+      res.send(movieInfo).status(200);
     }).catch(err => {
+      console.log(err);
       res.status(400).send({
-        errorMessage: 'Movie not found'
+        errorMessage: 'Movie was either not found or already added to the list'
       });
     });
   } catch (err) {
