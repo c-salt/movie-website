@@ -13,6 +13,12 @@ function comparePasswords(password, hashedPassword) {
     return bcrypt.compareSync(password, hashedPassword);
 }
 
+/**
+ * Creates a user account with default permissions
+ * @param {String} email
+ * @param {String} username
+ * @param {String} password
+ */
 methods.createAccount = (email, username, password) => {
     if (model.doesEmailExist(email)) {
         throw new Error('Email already exists');
@@ -21,10 +27,16 @@ methods.createAccount = (email, username, password) => {
         throw new Error('Username already exists');
     }
 
-    model.addUser(email, username, password);
+    return model.addUser(email, username, password);
 };
 
-methods.login = (email, password) => {
+/**
+ * Verifies that a user exists and their password is valid
+ * @param {String} email
+ * @param {String} password
+ * @returns {String}
+ */
+methods.verifyLogin = (email, password) => {
     const user = model.findUserByEmail(email);
     if (user.length === 0) {
         throw new Error('User does not exist');
@@ -35,12 +47,41 @@ methods.login = (email, password) => {
     return user[0].userid;
 };
 
-methods.getUser = (userid) => {
+/**
+ * Returns all account information for a supplied userid
+ * @param {String} userid
+ * @returns {Object}
+ */
+methods.getAccount = (userid) => {
     const user = model.findUserByUserID(userid);
     if (user.length === 0){
         throw new Error('User does not exist');
     }
-    return user;
-}
+    return user[0];
+};
+
+/**
+ * Updates an account, can update multiple values at a time
+ * @param {Object} body Object containing account fields to update
+ */
+methods.updateAccount = (body) => {
+    const userid = (body.discord_id !== undefined) ? model.getUserIDFromDiscordID(body.discord_id) : body.userid;
+    console.log(userid);
+    methods.getAccount(userid);
+    
+    for(const key of Object.keys(body.data)){
+        model.updateUserByUserID(key, body.data[key], userid);
+    }
+};
+
+/**
+ * Verifies that a discord_id is connected to a user
+ * @param {String} discord_id
+ * @returns {Boolean}
+ */
+methods.getVerified = (discord_id) => {
+    model.getUserIDFromDiscordID(discord_id);
+    return true;
+};
 
 module.exports = methods;

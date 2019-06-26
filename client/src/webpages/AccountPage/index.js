@@ -9,6 +9,7 @@ class AccountPage extends React.Component {
       userId: '',
       email: '',
       username: '',
+      permissionLevel: 0,
       discordVerified: false,
       emailVerified: false,
     };
@@ -26,6 +27,7 @@ class AccountPage extends React.Component {
         userId: res.userid,
         email: res.email,
         username: res.username,
+        permissionLevel: res.permission_level,
         discordVerified: !!res.discord_verified,
         emailVerified: !!res.email_verified,
       });
@@ -37,20 +39,21 @@ class AccountPage extends React.Component {
       <div className="view_account_screen">
         <h1>ACCOUNT PAGE</h1>
         <div className="account_fields_wrapper">
-          <h2>USERID</h2>
+          <h2>Hello, {this.state.username}</h2>
+          <h3 className="account_info_field">USER ID</h3>
           <p>{this.state.userId}</p>
-          <h2>EMAIL</h2>
+          <h3>PERMISSION LEVEL</h3>
+          <p>{this.state.permissionLevel}</p>
+          <h3>EMAIL</h3>
           <p>{this.state.email}</p>
-          <h2>USERNAME</h2>
-          <p>{this.state.username}</p>
-          <h2>DISCORD VERIFIED</h2>
+          <h3>DISCORD VERIFIED</h3>
           <p>{this.state.discordVerified.toString().toUpperCase()}</p>
-          <h2>EMAIL VERIFIED</h2>
+          <h3>EMAIL VERIFIED</h3>
           <p>{this.state.emailVerified.toString().toUpperCase()}</p>
-          <h3>
+          <h4>
             Return to
             <a href="/"> home.</a>
-          </h3>
+          </h4>
         </div>
       </div>
     );

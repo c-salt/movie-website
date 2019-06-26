@@ -60,12 +60,14 @@ class SignupPage extends React.Component {
         Accept: 'application/json',
       },
       body: JSON.stringify(this.state),
-    }).then(res => res.json()).then((res) => {
-      if (!res.success) {
-        alert(res);
+    }).then((res) => {
+      if (res.status != 201) {
+        res.json().then(res => { throw new Error(res.errorMessage) }).catch(err => alert(err));
       } else {
-        alert(res);
+        this.props.history.push('/');
       }
+    }).catch((err) => {
+      alert(err);
     });
   }
 

@@ -32,3 +32,4 @@ Here is a quick explanation of all of MovieTogether's features.
 ### User Rating Lists
 
 ## Future Plans
+

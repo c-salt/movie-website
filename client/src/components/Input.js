@@ -198,7 +198,6 @@ class Input extends React.Component {
           <span className="label_text">{this.props.text}</span>
         </label>
         <input
-          placeholder={this.props.placeholder}
           className="input"
           id={this.props.text}
           value={this.state.value}
@@ -233,13 +232,12 @@ class Input extends React.Component {
 }
 
 Input.propTypes = {
-  emptyMessage: PropTypes.string.isRequired,
-  errorMessage: PropTypes.string.isRequired,
+  emptyMessage: PropTypes.string,
+  errorMessage: PropTypes.string,
   hasHelpbox: PropTypes.bool.isRequired,
   minCharacters: PropTypes.string,
   name: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
-  placeholder: PropTypes.string.isRequired,
   text: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
   validate: PropTypes.func,
@@ -248,7 +246,9 @@ Input.propTypes = {
 
 Input.defaultProps = {
   validate: null,
-  minCharacters: 6,
+  minCharacters: "6",
+  emptyMessage: "",
+  errorMessage: ""
 };
 
 export { Input };

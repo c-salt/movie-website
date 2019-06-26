@@ -11,6 +11,7 @@ app.get('/movie/:imdbid', (req, res, next) => {
 
 });
 
+// Get a user's rating by imdbid
 app.get('/movie/:imdbid/user/:userid', (req, res, next) => {
 
 });

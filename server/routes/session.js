@@ -9,14 +9,14 @@ const secret = process.env.secret;
 app.post('/', (req, res, next) => {
   const { email, password } = req.body;
   try {
-    const userid = userController.login(email, password);
+    const userid = userController.verifyLogin(email, password);
     console.log('Session being created');
     const payload = { userid };
     const token = jwt.sign(payload, secret, {
       expiresIn: '1h'
     });
     res.cookie('token', token, { httpOnly: true });
-    res.status(200).send({ successMessage: 'Success' });
+    res.sendStatus(200);
 
   } catch (err) {
     console.log('Entered Catch: ', err);
