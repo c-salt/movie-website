@@ -5,6 +5,17 @@ module.exports = {
         console.log('User permissionLevel: ', permissionLevel, '. permissionLevel Type: ', typeof permissionLevel);
         return (isFutureMovie) ? permissionLevel & this.permission.ADD_MOVIE_FUTURELIST : permissionLevel & this.permission.ADD_MOVIE_SUPERLIST;
     },
+    canUserRemoveMovie: function(userid, body) {
+        const userModel = require('../models/user');
+        const movieModel = require('../models/movie');
+        
+        const permissionLevel = userModel.getUserPermissionLevel(userid);
+        const movieInfo = movieModel.getMovieInfo(body.data.name, body.data.year, body.data.imdbid);
+        if (movieInfo === undefined) {
+            throw new Error('Movie does not exist');
+        }
+        return (movieInfo.future_movie) ? permissionLevel & this.permission.REMOVE_OWN_MOVIE_FUTURELIST : permissionLevel & this.permission.REMOVE_OWN_MOVIE_SUPERLIST;
+    },
     permission: {
         OWNER: 1,
         RATE_MOVIE: 2,

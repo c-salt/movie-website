@@ -18,6 +18,7 @@ class PrivateRoute extends React.Component {
 
 
   checkAuth() {
+    console.log('Authenticate: ', this);
     authenticate()
       .then((res) => {
         this.setState({ loaded: true, isAuthenticated: res });

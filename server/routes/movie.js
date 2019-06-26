@@ -2,9 +2,17 @@ const movieController = require('../controllers/movie');
 const app = module.exports = require('express')();
 
 
-// Get all movies
+// Get a movie
 app.get('/', (req, res, next) => {
-
+  try {
+    const movieInfo = movieController.getMovie(req.body);
+    res.send(movieInfo).status(200);
+  } catch (err) {
+    console.log(err);
+    res.status(400).send({
+      errorMessage: err.message
+    });
+  }
 });
 
 // Create and add a movie to the super/future list.
@@ -24,6 +32,19 @@ app.post('/', (req, res, next) => {
       res.status(400).send({
           errorMessage: err.message
       });
+  }
+});
+
+// Delete a movie from the super/future list.
+app.delete('/', (req, res, next) => {
+  try {
+    movieController.deleteMovie(req.body)
+    res.sendStatus(204);
+  } catch (err) {
+    console.log(err);
+    res.status(400).send({
+      errorMessage: err.message
+    })
   }
 });
 
