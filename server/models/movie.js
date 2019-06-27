@@ -58,4 +58,20 @@ methods.getMovieInfo = (name, year, imdbid) => {
   
 };
 
+/**
+ * Updates the information stored in the movie table
+ * currently only changes future -> super list
+ * @param {String} name
+ * @param {String} year
+ * @param {String} imdbid
+ */
+methods.patchMovie = (name, year, imdbid) => {
+  const db = getDatabase();
+  if (name && year) {
+    db.prepare('UPDATE movies SET future_movie=0 WHERE title=? AND released=?').run(name, year.toString());
+  } else if (imdbid) {
+    db.prepare('UPDATE movies SET future_movie=0 WHERE imdb_id=?').run(imdbid);
+  }
+};
+
 module.exports = methods;
