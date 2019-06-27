@@ -48,7 +48,7 @@ methods.addUser = (email, username, password) => {
     const email_verified = 0;
     const discord_verified = 0;
     const hashedPassword = saltAndHashPassword(password);
-    const permission_level = permission.role.POWER_USER;
+    const permission_level = permission.role.DEFAULT;
 
     db.prepare('INSERT INTO users(userid,email,username,password,discord_id,email_verified,discord_verified,permission_level) VALUES (?,?,?,?,?,?,?,?)').run(
           userid, email, username, hashedPassword, null, email_verified, discord_verified, permission_level
