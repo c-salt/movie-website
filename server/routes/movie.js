@@ -48,6 +48,19 @@ app.delete('/', (req, res, next) => {
   }
 });
 
+// Patch a movie's information
+app.patch('/', (req, res, next) => {
+  try {
+    movieController.patchMovie(req.body)
+    res.sendStatus(204);
+  } catch (err) {
+    console.log(err);
+    res.status(400).send({
+      errorMessage: err.message
+    })
+  }
+});
+
 // Get movie by genre
 app.get('/genre', (req, res, next) => {
 

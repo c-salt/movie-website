@@ -11,10 +11,21 @@ module.exports = {
         
         const permissionLevel = userModel.getUserPermissionLevel(userid);
         const movieInfo = movieModel.getMovieInfo(body.data.name, body.data.year, body.data.imdbid);
+        
         if (movieInfo === undefined) {
             throw new Error('Movie does not exist');
         }
+        
+        if (movieInfo.added_by !== userid && !(permissionLevel & this.permission.REMOVE_ANY_MOVIE)) {
+            throw new Error('User has inadequate permissions to modify movie');
+        }
+        
         return (movieInfo.future_movie) ? permissionLevel & this.permission.REMOVE_OWN_MOVIE_FUTURELIST : permissionLevel & this.permission.REMOVE_OWN_MOVIE_SUPERLIST;
+    },
+    canUserUpdateMovie: function(userid) {
+        const userModel = require('../models/user');
+        const permissionLevel = userModel.getUserPermissionLevel(userid);
+        return (permissionLevel & this.permission.ADD_MOVIE_SUPERLIST);
     },
     permission: {
         OWNER: 1,

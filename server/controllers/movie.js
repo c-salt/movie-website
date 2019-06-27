@@ -75,6 +75,35 @@ methods.deleteMovie = (body) => {
 };
 
 /**
+ * Patches a movie in the movie table
+ * @param {Object} body
+ */
+methods.patchMovie = (body) => {
+  const userid = (body.discord_id !== undefined) ? userModel.getUserIDFromDiscordID(body.discord_id) : body.userid;
+  
+  const movieInfo = movieModel.getMovieInfo(body.data.name, body.data.year, body.data.imdbid);
+
+  if (!movieInfo) {
+    throw new Error('Movie does not exist in future or super lists');
+  }
+
+  if (!movieInfo.future_movie) {
+    throw new Error('Movie is already in the Super List');
+  }
+
+  if (!permissions.canUserUpdateMovie(userid)){
+    throw new Error('User has inadequate permissions to modify movie');
+  }
+
+  try {
+    movieModel.patchMovie(body.data.name, body.data.year, body.data.imdbid);
+  } catch (err) {
+    console.log(err);
+    throw new Error('Could not change movie list');
+  }
+};
+
+/**
  * Gets the information on a movie in the movie table
  * @param {Object} body
  * @returns {Object}
