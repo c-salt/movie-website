@@ -8,7 +8,7 @@ const methods = {};
  * @returns {sqlite3.Database}
  */
 function getDatabase() {
-  const db = new sqlite3(path.join(__dirname, 'movieTogetherDB.db'), { verbose: console.log });
+  const db = new sqlite3(path.join(__dirname, 'movieTogetherDB.db'));
   return db;
 };
 

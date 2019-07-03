@@ -1,5 +1,21 @@
 const bcrypt = require('bcrypt');
+const logger = require('log4js').getLogger('userController');
 const model = require('../models/user');
+
+/**
+ * Handles application's user account functionality for Discord and web.
+ * 
+ * This file handles all of the necessary orchestration required to have
+ * the user account functionality. This includes calling proper model functions
+ * for creating, deleting, and updating user accounts along with any other necessary
+ * functionality.
+ *
+ * @author Elijah Sattler   <elijah.sattler@c-salt.info>
+ * @author Justen Caldwell  <justen.caldwell@c-salt.info>
+ *
+ * @created   May 03, 2019
+ * @modified  Jul 02, 2019
+ */
 
 const methods = {};
 
@@ -10,6 +26,7 @@ const methods = {};
  * @returns {Boolean}
  */
 function comparePasswords(password, hashedPassword) {
+    logger.trace('Entering comparePasswords function in server/controllers/user.js');
     return bcrypt.compareSync(password, hashedPassword);
 }
 
