@@ -1,14 +1,20 @@
+const logger = require('log4js').getLogger('movieRoute');
 const movieController = require('../controllers/movie');
 const app = module.exports = require('express')();
 
 
 // Get a movie
 app.get('/', (req, res, next) => {
+  logger.trace('Entering GET /movie route in server/routes/movie.js');
+
   try {
+    logger.trace('Calling getMovie function server/controllers/movie.js');
     const movieInfo = movieController.getMovie(req.body);
+    logger.debug(`movieInfo returned from getMovie: ${JSON.stringify(movieInfo)}`);
+
     res.send(movieInfo).status(200);
   } catch (err) {
-    console.log(err);
+    logger.error(`Error encountered: ${err}`);
     res.status(400).send({
       errorMessage: err.message
     });
@@ -17,18 +23,21 @@ app.get('/', (req, res, next) => {
 
 // Create and add a movie to the super/future list.
 app.post('/', (req, res, next) => {
+  logger.trace('Entering POST /movie route in server/routes/movie.js');
+
   try {
-    console.log(`Calling addMovie function with body: ${req.body}`);
+    logger.trace('Calling addMovie function in server/controllers/movie.js');
     movieController.addMovie(req.body).then((movieInfo) => {
-      console.log('Movie Information in Route: ', movieInfo);
+      logger.debug('Movie Information in Route: ', movieInfo);
       res.send(movieInfo).status(200);
     }).catch(err => {
-      console.log(err);
+      logger.error(`Error encountered: ${err}`);
       res.status(400).send({
         errorMessage: 'Movie was either not found or already added to the list'
       });
     });
   } catch (err) {
+      logger.error(`Error encountered: ${err}`);
       res.status(400).send({
           errorMessage: err.message
       });
@@ -37,11 +46,14 @@ app.post('/', (req, res, next) => {
 
 // Delete a movie from the super/future list.
 app.delete('/', (req, res, next) => {
+  logger.trace('Entering DELETE /movie route in server/routes/movie.js');
+
   try {
+    logger.trace('Calling deleteMovie function in server/controllers/movie.js');
     movieController.deleteMovie(req.body)
     res.sendStatus(204);
   } catch (err) {
-    console.log(err);
+    logger.error(`Error encountered: ${err}`);
     res.status(400).send({
       errorMessage: err.message
     })
@@ -50,11 +62,14 @@ app.delete('/', (req, res, next) => {
 
 // Patch a movie's information
 app.patch('/', (req, res, next) => {
+  logger.trace('Entering PATCH /movie route in server/routes/movie.js')
+
   try {
+    logger.trace('Calling patchMovie function in server/controllers/movie.js');
     movieController.patchMovie(req.body)
     res.sendStatus(204);
   } catch (err) {
-    console.log(err);
+    logger.error(`Error encountered: ${err}`);
     res.status(400).send({
       errorMessage: err.message
     })
